@@ -1,3 +1,5 @@
 # AceApp Frontend
-## Languages: HTML, CSS, JS
-## Frameworks: Node.js
+## Languages
+HTML, CSS, JS
+## Frameworks
+Node.js
