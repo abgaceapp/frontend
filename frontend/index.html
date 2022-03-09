@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" id="home">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HODLE</title>
+
+    <meta name="description" content="Guess the HODLE in five tries to win daily rewards of cash and NFTs.">
+    <meta name="author" content="HODLE">
+
+    <meta property="og:title" content="HODLE">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hodle.io">
+    <meta property="og:description" content="Guess the HODLE in five tries to win daily rewards of cash and NFTs.">
+    <meta property="og:image" content="IMAGE HERE">
+
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
+<body>
+    <div class="headernav" id="aceapp-header">
+      <a href="/" class="header-logo" data-link>ACE<span class="light-blue">app</span></a>
+      <a onclick="handleNav()" class="left-nav"><img id="leftnav" src="/static/img/menu-icon.svg" style="height: 20px;"></img></a>
+      <!-- <a onclick="handleWallet()" class="right-nav"><img src="/static/img/wallet-icon.svg" style="height: 20px;"></img></a> -->
+    </div>
+
+    <div id="mySidenav" class="sidenav">
+      <a href="/" class="sidenav-logo" data-link></a>
+      <a href="/territory" class="main-rep clickable" data-link><img class="nav-icon" src="/static/img/repeat-icon.svg" data-link></img>Andrew<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="main-rep-mini">Territory Overview</span></a>
+      <a href="/store" class="clickable" data-link><img class="nav-icon" src="/static/img/repeat-icon.svg" data-link></img>Andrew</a>
+      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Angie</a>
+      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Connor</a>
+      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Courtney</a>
+      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Garrett</a>
+      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Isaac</a>
+      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Jacob</a>
+      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Jesse</a>
+      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Justine</a>
+      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Leigh</a>
+      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Mark</a>
+      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Nick</a>
+      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Taylor</a>
+
+    </div>
+
+    <div id="app"></div>
+
+    <!--
+    <div class="footer-hodle">
+      <a class="footer-text">
+        <b>ACEapp</b>
+      </a>
+      <p class="footer-text" style="margin-top: -5px;">
+        <span style="font-size: 12px;">VERSION 1.0.0</span>
+      </p>
+    </div>
+    -->
+    <script type="module" src="/static/js/index.js"></script>
+    <script>
+      /* Set the width of the side navigation to 250px */
+
+      var state = 0;
+
+      function handleNav() {
+        if (state === 0) {
+          openNav();
+        } else {
+          closeNav();
+        }
+      }
+
+      function openNav() {
+        /* document.getElementById("mySidenav").classList.toggle('side-nav-open'); */
+        document.getElementById("mySidenav").style.marginLeft = "0px";
+        document.getElementById("aceapp-header").style.marginLeft = "350px";
+        document.getElementById("app").style.marginLeft = "350px";
+        document.getElementById("app").style.marginRight = "-350px";
+        document.getElementById("leftnav").src = "/static/img/menu-x.svg";
+        state = 1;
+      }
+
+      function closeNav() {
+        /* document.getElementById("mySidenav").classList.toggle('side-nav-open'); */
+        document.getElementById("mySidenav").style.marginLeft = "-350px";
+        document.getElementById("aceapp-header").style.marginLeft = "0px";
+        document.getElementById("app").style.marginLeft = "0px";
+        document.getElementById("app").style.marginRight = "0px";
+        document.getElementById("leftnav").src = "/static/img/menu-icon.svg";
+        state = 0;
+      }
+    </script>
+</body>
+</html>

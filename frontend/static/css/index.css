@@ -1,0 +1,522 @@
+/* ***** FONTS ***** */
+
+@font-face {
+    font-family: 'Point Book';
+    src: url('font/Point-Book.eot');
+    src: url('font/Point-Book.eot?#iefix') format('embedded-opentype'),
+        url('font/Point-Book.woff2') format('woff2'),
+        url('font/Point-Book.woff') format('woff'),
+        url('font/Point-Book.ttf') format('truetype'),
+        url('font/Point-Book.svg#Point-Book') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Point';
+    src: url('font/Point-Black.eot');
+    src: url('font/Point-Black.eot?#iefix') format('embedded-opentype'),
+        url('font/Point-Black.woff2') format('woff2'),
+        url('font/Point-Black.woff') format('woff'),
+        url('font/Point-Black.ttf') format('truetype'),
+        url('font/Point-Black.svg#Point-Black') format('svg');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Point';
+    src: url('font/Point-Bold.eot');
+    src: url('font/Point-Bold.eot?#iefix') format('embedded-opentype'),
+        url('font/Point-Bold.woff2') format('woff2'),
+        url('font/Point-Bold.woff') format('woff'),
+        url('font/Point-Bold.ttf') format('truetype'),
+        url('font/Point-Bold.svg#Point-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Point';
+    src: url('font/Point-Regular.eot');
+    src: url('font/Point-Regular.eot?#iefix') format('embedded-opentype'),
+        url('font/Point-Regular.woff2') format('woff2'),
+        url('font/Point-Regular.woff') format('woff'),
+        url('font/Point-Regular.ttf') format('truetype'),
+        url('font/Point-Regular.svg#Point-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Point Extra';
+    src: url('font/Point-ExtraBold.eot');
+    src: url('font/Point-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('font/Point-ExtraBold.woff2') format('woff2'),
+        url('font/Point-ExtraBold.woff') format('woff'),
+        url('font/Point-ExtraBold.ttf') format('truetype'),
+        url('font/Point-ExtraBold.svg#Point-ExtraBold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Point Semi';
+    src: url('font/Point-SemiBold.eot');
+    src: url('font/Point-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('font/Point-SemiBold.woff2') format('woff2'),
+        url('font/Point-SemiBold.woff') format('woff'),
+        url('font/Point-SemiBold.ttf') format('truetype'),
+        url('font/Point-SemiBold.svg#Point-SemiBold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+
+
+
+/* ***** STYLES ***** */
+
+html {
+  scroll-behavior: smooth;
+
+  position: relative;
+
+  margin: 0;
+  padding: 0;
+
+  height: 100%;
+}
+
+body {
+    --nav-width: 200px;
+    margin: 0 0 0 0;
+
+    font-family: 'Clear Sans';
+    font-size: 18px;
+    color: white;
+
+    height: 100%;
+
+    text-align: center;
+
+    background-image: url('../img/blue_bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    background-color: #161616;
+}
+
+#aceapp-header {
+  transition: margin-left .2s;
+}
+
+#mySidenav {
+  transition: margin-left .2s;
+}
+
+#app {
+  height: 92%;
+  transition: margin-left .2s;
+}
+
+
+
+/* Colors */
+
+span.dark-blue {
+  color: #003b5c;
+}
+
+span.light-blue {
+  color: #54c8f5;
+}
+
+
+/* Add a black background color to the top navigation */
+.headernav {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+
+  background: white;
+  padding-top: 20px;
+  padding-bottom: 0px;
+
+  height: 40px;
+
+  z-index: 1000;
+
+  text-align: center;
+
+  filter: drop-shadow(0px -8px 10px #003b5c);
+}
+
+.header-logo {
+  position: absolute;
+
+  width: 200px;
+  height: 35px;
+
+  margin-left: -100px;
+
+  top: 17px;
+
+  font-family: 'Point';
+  font-weight: Bold;
+  font-size: 21px;
+
+  color: #003b5c;
+  text-decoration: none;
+}
+
+.sidenav {
+  height: 100%; /* 100% Full-height */
+  width: 350px; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #003b5c;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  transition: 0.2s; /* 0.5 second transition effect to slide in the sidenav */
+
+  z-index: 1300;
+
+  text-align: left;
+
+  /*
+  -webkit-transform: translateX(-700px;);
+  -ms-transform: translateX(-700px);
+  transform: translateX(-700px);
+  */
+  margin-left: -350px;
+}
+
+.side-nav-open {
+  -webkit-transform: translateX(0px;);
+  -ms-transform: translateX(0px);
+  transform: translateX(0px);
+}
+
+.left-nav {
+  height: 20px;
+  width: 20px;
+  margin-left: 20px;
+  margin-right: -50px;
+  float: left;
+
+  padding-top: 0px;
+
+  cursor: pointer;
+}
+
+.right-nav {
+  height: 20px;
+  width: 20px;
+  margin-left: -50px;
+  margin-right: 20px;
+  float: right;
+
+  padding-top: 8px;
+
+  cursor: pointer;
+}
+
+/* The navigation menu links */
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: bold;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav .main-rep {
+  margin-top: 150px;
+  margin-bottom: 25px;
+
+  font-size: 25px;
+  line-height: 20px;
+}
+
+.sidenav .main-rep-mini {
+  font-size: 18px;
+  color: #54c8f5;
+}
+
+.nav-icon {
+  height: 20px;
+  padding-right: 15px;
+  margin-bottom: -3px;
+}
+
+.clickable {
+  vertical-align: middle;
+  margin: auto;
+  display: flex;
+
+  line-height: 10px;
+}
+
+/* When you mouse over the navigation links, change their color */
+.clickable:hover {
+  /* text-decoration: underline; */
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+  font-weight: 100;
+  position: absolute;
+  top: 0;
+  right: 15px;
+  font-size: 25px;
+  margin-left: 50px;
+  color: white;
+
+  padding-top: 22px;
+}
+
+.sidenav .sidenav-logo {
+  position: absolute;
+
+  background-image: url('../img/abg_logo_white.png');
+  background-size: 120px 55px;
+  background-repeat: no-repeat;
+
+  width: 130px;
+  height: 75px;
+
+  top: 20px;
+  left: 0px;
+  margin-left: 110px;
+  margin-top: 18px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+.home-row {
+  float: left;
+
+  width: 100%;
+  height: 100%;
+
+  box-sizing: border-box;
+  display: flex;
+
+  padding: 30px;
+}
+
+.home-row .leader-widget, .wc-widget, .seltzer-widget {
+  border-radius: 10px;
+
+  text-align: left;
+}
+
+.home-row .leader-widget {
+  width: 40%;
+  padding: 20px 30px;  /* top and bottom 20, right and left 30 */
+
+  margin-right: 30px;
+  background-color: white;
+}
+
+.home-row h1 {
+  font-size: 25px;
+  color: #003b5c;
+  font-family: 'Point Extra';
+  font-weight: bold;
+
+  margin-bottom: 0px;
+}
+
+.home-row h2 {
+  font-size: 15px;
+  color: #003b5c;
+  font-family: 'Point';
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 0px;
+}
+
+.home-row .wc-widget, .seltzer-widget {
+  width: 23%;
+  padding: 20px;
+  margin-right: 30px;
+
+  background-color: white;
+}
+
+.home-row .seltzer-widget {
+  margin-right: 0px;
+}
+
+
+/* Clear floats after the columns */
+.home-row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.territory-top, .store-top {
+  color: white;
+
+  font-size: 15;
+  font-family: 'Point Extra';
+  font-weight: bold;
+  height: 35px;
+  width: 100%;
+
+  padding-top: 10px;
+}
+
+.territory-top {
+  background-color: #003b5c;
+}
+
+.store-top {
+  background-color: #54c8f5;
+}
+
+
+.mint-img-div {
+  margin: auto;
+  margin-top: 105px;
+  margin-bottom: 0px;
+
+  width: 500px;
+  height: 350px;
+  text-align: center;
+  justify-content: center;
+}
+
+.mint-img {
+  height: 275px;
+  width: 275px;
+
+  content: url('../img/joindiscord_tiles.png');
+}
+
+.mint-text .top-title {
+  margin-top: 0px;
+  margin-bottom: 20px;
+  padding-top: 0px;
+
+  font-size: 30px;
+}
+
+.mint-text .title-subheader {
+  font-weight: normal;
+}
+
+.mint-text a {
+  color: white;
+}
+
+
+.content-div {
+  border-top: 2px solid #3a3a3c;
+
+  width: 500px;
+  margin: auto;
+
+  padding-top: 35px;
+  padding-bottom: 35px;
+}
+
+.content-div-bottom {
+  border-bottom: 2px solid #3a3a3c;
+  margin-bottom: 175px;
+}
+
+.content-div h1 {
+  font-size: 20px;
+  font-weight: bold;
+
+  margin-bottom: -10px;
+}
+
+.content-div h1.top-title {
+  font-weight: 300;
+  font-size: 25px;
+  line-height: 25px;
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.content-div h2 {
+  font-size: 17px;
+  font-weight: normal;
+}
+
+.menu-style {
+  margin: auto;
+
+  margin-top: 30px;
+  margin-bottom: 30px;
+
+  display: block;
+}
+
+.align-right {
+  float: right;
+}
+
+.align-left {
+  float: left;
+}
+
+.rewards-images {
+  height: 200px;
+  width: 500px;
+
+  margin-bottom: 10px;
+}
+
+.rewards-img-col {
+  float: left;
+  width: 31%;
+  padding: 5px;
+}
+
+
+.footer-hodle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  margin-bottom: 0px;
+  padding-top: 15px;
+
+  margin-top: 100px;
+
+  background-color: #242424;
+
+  height: 60px;
+
+  text-align: center;
+}
+
+.footer-text {
+  font-size: 15px;
+  color: white;
+}
