@@ -3,43 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HODLE</title>
+    <title>AceApp</title>
 
-    <meta name="description" content="Guess the HODLE in five tries to win daily rewards of cash and NFTs.">
-    <meta name="author" content="HODLE">
+    <meta name="description" content="AceApp Description">
+    <meta name="author" content="AceApp">
 
-    <meta property="og:title" content="HODLE">
+    <meta property="og:title" content="AceApp">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://hodle.io">
-    <meta property="og:description" content="Guess the HODLE in five tries to win daily rewards of cash and NFTs.">
+    <meta property="og:url" content="AceApp URL">
+    <meta property="og:description" content="AceApp Description">
     <meta property="og:image" content="IMAGE HERE">
 
     <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
     <div class="headernav" id="aceapp-header">
-      <a href="/" class="header-logo" data-link>ACE<span class="light-blue">app</span></a>
+      <a href="/" class="header-logo"><span class="dark-blue">ACE</span><span class="light-blue">app</span></a>
       <a onclick="handleNav()" class="left-nav"><img id="leftnav" src="/static/img/menu-icon.svg" style="height: 20px;"></img></a>
       <!-- <a onclick="handleWallet()" class="right-nav"><img src="/static/img/wallet-icon.svg" style="height: 20px;"></img></a> -->
     </div>
 
     <div id="mySidenav" class="sidenav">
       <a href="/" class="sidenav-logo" data-link></a>
-      <a href="/territory" class="main-rep clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Andrew<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="main-rep-mini">Territory Overview</span></a>
-      <a href="/store" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Andrew</a>
-      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Angie</a>
-      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Connor</a>
-      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Courtney</a>
-      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Garrett</a>
-      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Isaac</a>
-      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Jacob</a>
-      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Jesse</a>
-      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Justine</a>
-      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Leigh</a>
-      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Mark</a>
-      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Nick</a>
-      <a href="/territory" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Taylor</a>
-
+      <a href="/territory/overview" class="main-rep clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Andrew<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="main-rep-mini">Territory Overview</span></a>
+      <a href="/territory/andrew" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Andrew</a>
+      <a href="/territory/angie" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Angie</a>
+      <a href="/territory/connor" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Connor</a>
+      <a href="/territory/courtney" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Courtney</a>
+      <a href="/territory/garrett" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Garrett</a>
+      <a href="/territory/isaac" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Isaac</a>
+      <a href="/territory/jacob" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Jacob</a>
+      <a href="/territory/josee" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Josee</a>
+      <a href="/territory/justine" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Justine</a>
+      <a href="/territory/leigh" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Leigh</a>
+      <a href="/territory/mark" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Mark</a>
+      <a href="/territory/nick" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Nick</a>
+      <a href="/territory/taylor" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Taylor</a>
     </div>
 
     <div id="app"></div>
@@ -55,6 +54,7 @@
     </div>
     -->
     <script type="module" src="/static/js/index.js"></script>
+    <script type="module" src="/static/js/views/periodFuncs.js"></script>
     <script>
       /* Set the width of the side navigation to 250px */
 
