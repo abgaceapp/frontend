@@ -2,16 +2,6 @@ import Landing from "./views/landing.js";
 import Territory from "./views/territory.js";
 import Store from "./views/store.js";
 
-/*
-import Play from "./views/play.js";
-import Mint from "./views/mint.js";
-import Details from "./views/details.js";
-import HowToPlay from "./views/instructions.js";
-import Faq from "./views/faq.js";
-import Rewards from "./views/rewards.js";
-import Attributes from "./views/attributes.js";
-*/
-
 const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
 const getParams = match => {
@@ -31,8 +21,8 @@ const navigateTo = url => {
 const router = async () => {
     const routes = [
         { path: "/", view: Landing },
-        { path: "/territory", view: Territory },
-        { path: "/store", view: Store },
+        { path: "/territory/:tm", view: Territory },
+        { path: "/store/:id", view: Store },
     ];
 
     // Test each route for potential match
@@ -53,7 +43,6 @@ const router = async () => {
     }
 
     const view = new match.route.view(getParams(match));
-
     document.querySelector("#app").innerHTML = await view.getHtml();
 };
 

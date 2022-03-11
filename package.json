@@ -16,6 +16,8 @@
     "@fortawesome/react-fontawesome": "^0.1.17",
     "express": "^4.17.2",
     "firebase": "^9.6.8",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.1",
     "serve-favicon": "^2.5.0"
   }
 }
