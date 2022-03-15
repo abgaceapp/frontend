@@ -7,12 +7,17 @@ function getMetrics(db, name) {
   console.log(`TM_List/${name}`);
   const metricRef = ref(db, `TM_List/${name}`);
 
+  console.log("GETTING METRICS FOR")
+  console.log(name);
+
   onValue(metricRef, (snapshot) => {
     const data = snapshot.val();
     document.querySelector("#mktshare-rtd").innerHTML = `${data["MktShare_RTD"]}%`;
     document.querySelector("#mktshare-seltz").innerHTML = `${data["MktShare_Seltz"]}%`;
     document.querySelector("#mktshare-tea").innerHTML = `${data["MktShare_Tea"]}%`;
     document.querySelector("#mktshare-wc").innerHTML = `${data["MktShare_WC"]}%`;
+
+    fadeOutLoader();
   });
 }
 
@@ -25,6 +30,7 @@ export default class extends AbstractView {
     async getHtml() {
 
       document.querySelector("body").style.backgroundImage = "url('../static/img/liteblue_bg.png')";
+      document.getElementById("aceapp-header").style.visibility = "visible";
 
       const date = new Date();
       const curPeriod = getPeriod(date.getMonth(), date.getDate(), date.getFullYear());

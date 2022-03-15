@@ -27,6 +27,8 @@ function getStoreInfo(db, storeID) {
     for (var key in data){
       console.log(`${key} ... ${data[key]}`);
     }
+
+    fadeOutLoader();
   });
 }
 
@@ -81,56 +83,6 @@ function getStoreForecasts(db, storeID) {
     document.querySelector("#app").innerHTML = topHTML.concat(predictionsHTML, bottomHTML);
 
     getStoreInfo(db, storeID);
-    console.log("DONE");
-
-    /*
-    const baseString = `
-      <div class="home-row">
-        <div class="leader-widget">
-          <h1>Live Leaderboard ($ Closed)</h1>
-          <h2>May 20 - May 27</h2>\n`;
-
-    var loadedString = ``;
-
-    for (var i = 0; i < dollar_List.length; i++) {
-        loadedString += `<h1>${dollar_List[i]} ....... $${dollar_NumList[i]}</h1>`
-      if (i + 1 == dollar_List.length) {
-        loadedString += `</div>`
-      } else {
-        loadedString += "<br>";
-      }
-    }
-
-    loadedString += `<div class="wc-widget">
-      <h1>% of White Claw</h1>
-      <h2>May 20 - May 27</h2>`;
-
-    for (var i = 0; i < wcpct_List.length; i++) {
-      loadedString += `<h1>${wcpct_List[i]} ....... ${wcpct_NumList[i]}%</h1>`
-      if (i + 1 == wcpct_List.length) {
-        loadedString += `</div>`
-      } else {
-        loadedString += "<br>";
-      }
-    }
-
-    loadedString += `<div class="seltzer-widget">
-                  <h1>Seltzer Mkt Share</h1>
-                  <h2>May 20 - May 27</h2>`;
-
-    for (var i = 0; i < seltzmkt_List.length; i++) {
-      loadedString += `<h1>${seltzmkt_List[i]} ....... ${seltzmkt_NumList[i]}%</h1>`
-      if (i + 1 == seltzmkt_List.length) {
-        loadedString += `</div>`
-      } else {
-        loadedString += "<br>";
-      }
-    }
-
-    loadedString += '</div>';
-
-    document.querySelector("#app").innerHTML = baseString.concat(loadedString);
-    */
   });
 }
 
@@ -145,6 +97,7 @@ export default class extends AbstractView {
       //getTMList(this.db);
 
       document.querySelector("body").style.backgroundImage = "url('../static/img/white_bg.png')";
+      document.getElementById("aceapp-header").style.visibility = "visible";
 
       const storeID = this.params.id;
 
