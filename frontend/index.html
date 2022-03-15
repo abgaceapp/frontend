@@ -3,58 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AceApp</title>
-
-    <meta name="description" content="AceApp Description">
+    <title>ACE App</title>
+    <meta name="description" content="You asked? We delivered. Welcome to the all-new ACE App.">
     <meta name="author" content="AceApp">
 
-    <meta property="og:title" content="AceApp">
+    <meta property="og:title" content="ACE App">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="AceApp URL">
-    <meta property="og:description" content="AceApp Description">
+    <meta property="og:url" content="https://aceapp-abg.herokuapp.com">
+    <meta property="og:description" content="Welcome to the all-new ACE App.">
     <meta property="og:image" content="IMAGE HERE">
 
     <link rel="stylesheet" href="/static/css/index.css">
+
+    <link rel="stylesheet" href="/static/toastfs/css/toastfs.min.css">
+    <script src="/static/toastfs/js/toastfs.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
     <div class="headernav" id="aceapp-header">
-      <a href="/" class="header-logo"><span class="dark-blue" style="font-family:'Point Extra'">ACE</span><span class="light-blue">APP</span></a>
-      <a onclick="handleNav()" class="left-nav"><img id="leftnav" src="/static/img/menu-icon.svg" style="height: 20px;"></img></a>
-      <!-- <a onclick="handleWallet()" class="right-nav"><img src="/static/img/wallet-icon.svg" style="height: 20px;"></img></a> -->
+      <a href="/" class="header-logo" id="header-logo"><span class="dark-blue" style="font-family:'Point Extra'">ACE</span><span class="light-blue">APP</span></a>
+      <a onclick="handleNav()" id="left-nav" class="left-nav"><img id="leftnav" src="/static/img/menu-icon.svg" style="height: 20px;"></img></a>
+      <a onclick="dropdownFunc()" class="right-nav"><img src="/static/img/account-icon.svg" style="height: 30px; margin-top: -10px;"></img></a>
+      <div id="accountDropdown" class="dropdown-content">
+        <a id="menu-account" href="/account">My Account</a>
+        <a id="menu-territory" href="/territory/andrew">My Territory</a>
+        <a id="menu-stores" href="/stores/andrew">My Stores</a>
+      </div>
+    </div>
+
+    <div class="loader-wrapper" id="loader">
+      <span class="loader"><span class="loader-inner"></span></span>
     </div>
 
     <div id="mySidenav" class="sidenav">
-      <a href="/" class="sidenav-logo" data-link></a>
+      <a href="/" class="sidenav-logo"></a>
       <a href="/territory/overview" class="main-rep clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Andrew<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="main-rep-mini">Territory Overview</span></a>
-      <a href="/territory/andrew" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Andrew</a>
-      <a href="/territory/angie" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Angie</a>
-      <a href="/territory/connor" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Connor</a>
-      <a href="/territory/courtney" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Courtney</a>
-      <a href="/territory/garrett" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Garrett</a>
-      <a href="/territory/isaac" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Isaac</a>
-      <a href="/territory/jacob" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Jacob</a>
-      <a href="/territory/josee" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Josee</a>
-      <a href="/territory/justine" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Justine</a>
-      <a href="/territory/leigh" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Leigh</a>
-      <a href="/territory/mark" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Mark</a>
-      <a href="/territory/nick" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Nick</a>
-      <a href="/territory/taylor" class="clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Taylor</a>
+      <a href="/territory/andrew" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Andrew</a>
+      <a href="/territory/angie" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Angie</a>
+      <a href="/territory/connor" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Connor</a>
+      <a href="/territory/courtney" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Courtney</a>
+      <a href="/territory/garrett" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Garrett</a>
+      <a href="/territory/isaac" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Isaac</a>
+      <a href="/territory/jacob" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Jacob</a>
+      <a href="/territory/josee" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Josee</a>
+      <a href="/territory/justine" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Justine</a>
+      <a href="/territory/leigh" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Leigh</a>
+      <a href="/territory/mark" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Mark</a>
+      <a href="/territory/nick" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Nick</a>
+      <a href="/territory/taylor" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Taylor</a>
     </div>
 
     <div id="app"></div>
 
-    <!--
-    <div class="footer-hodle">
-      <a class="footer-text">
-        <b>ACEapp</b>
-      </a>
-      <p class="footer-text" style="margin-top: -5px;">
-        <span style="font-size: 12px;">VERSION 1.0.0</span>
-      </p>
-    </div>
-    -->
     <script type="module" src="/static/js/index.js"></script>
     <script type="module" src="/static/js/views/periodFuncs.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js"></script>
+    <script>
+      function dropdownFunc() {
+        document.getElementById("accountDropdown").classList.toggle("dropdown-show");
+      }
+
+      function fadeOutLoader() {
+        document.getElementById("loader").classList.add("loader-fadeOut");
+      }
+    </script>
     <script>
       /* Set the width of the side navigation to 250px */
 

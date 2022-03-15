@@ -1,6 +1,9 @@
-import Landing from "./views/landing.js";
+import Landing from "./views/home.js";
 import Territory from "./views/territory.js";
 import Store from "./views/store.js";
+import Login from "./views/login.js";
+import Account from "./views/account.js";
+import StoreList from "./views/storeList.js";
 
 const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
@@ -23,6 +26,9 @@ const router = async () => {
         { path: "/", view: Landing },
         { path: "/territory/:tm", view: Territory },
         { path: "/store/:id", view: Store },
+        { path: "/login", view: Login },
+        { path: "/account", view: Account },
+        { path: "/stores/:tm", view: StoreList }
     ];
 
     // Test each route for potential match
