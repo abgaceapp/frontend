@@ -1,6 +1,6 @@
 import AbstractView from "./AbstractView.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
-import { getPeriod } from "./periodFuncs.js"
+import { getPeriod, roundToTwo } from "./periodFuncs.js"
 
 
 function getMetrics(db, name) {
@@ -21,6 +21,61 @@ function getMetrics(db, name) {
   });
 }
 
+function getStoreForecasts(db, tmName) {
+
+  const date = new Date();
+  const curPeriod = getPeriod(date.getMonth(), date.getDate(), date.getFullYear());
+  const storeRef = ref(db, `Predicted_Data/FY${curPeriod[2]}P${curPeriod[0]}W${curPeriod[1]}/${tmName}`);
+
+  const forecastWait = onValue(storeRef, (snapshot) => {
+    const snapdata = snapshot.val();
+    var skuList = [];
+    var salesList = [];
+    var revList = [];
+
+    const topHTML = `
+      <div class = "territory-top">
+        ${tmName}'s <span class="light-blue">Territory Overview</span>
+      </div>
+      <div class="home-row">
+        <div class="details-widget">
+          <h1 style="margin-bottom: 40px; color: white;">Quick Look Metrics</h1>
+          <h1 class="detail-head" style="padding-top: 10px;">RTD<span class="detail-right" id="mktshare-rtd"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+          <h1 class="detail-head">Seltzer<span class="detail-right" id="mktshare-seltz"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+          <h1 class="detail-head">White Claw<span class="detail-right" id="mktshare-wc"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+          <h1 class="detail-head" style="margin-bottom: 10px;">Tea<span class="detail-right" id="mktshare-tea"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+        </div>
+        <div class="table-widget">
+          <h1 style="margin-bottom: 40px; color: white;">Territory Opportunities</h1>
+    `;
+
+    const bottomHTML = `</div></div>`;
+
+    var predictionsHTML = ``;
+
+    for (var key in snapdata) {
+      skuList.push(key);
+      salesList.push(roundToTwo(snapdata[key]["Sales"]));
+      revList.push(roundToTwo(snapdata[key]["Revenue"]));
+    }
+
+    for (var i = 0; i < skuList.length; i++) {
+      predictionsHTML += `<h2 style="margin-bottom: 0px;"><b>${skuList[i]}</b><br>REVENUE: $${revList[i]}&nbsp;&nbsp;&nbsp;SALES: ${salesList[i]}</h2>`
+
+      if (i+1 == skuList.length) {
+        predictionsHTML += "</div>";
+      } else {
+        predictionsHTML += "<br>";
+      }
+    }
+
+    document.querySelector("#app").innerHTML = topHTML.concat(predictionsHTML, bottomHTML);
+    getMetrics(db, tmName);
+
+  });
+}
+
+
 export default class extends AbstractView {
     constructor(params) {
         super(params);
@@ -39,7 +94,7 @@ export default class extends AbstractView {
       var tmName = `${this.params.tm}`;
       tmName = tmName.replace(/^\w/, (c) => c.toUpperCase());
 
-      getMetrics(this.db, tmName)
+      getStoreForecasts(this.db, tmName);
 
       const baseString = `
         <div class = "territory-top">
