@@ -2,6 +2,8 @@ import AbstractView from "./AbstractView.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
 import { getPeriod, roundToTwo } from "./periodFuncs.js"
 
+import { Grid, html } from "https://unpkg.com/gridjs?module";
+
 
 function getMetrics(db, name) {
   console.log(`TM_List/${name}`);
@@ -21,58 +23,133 @@ function getMetrics(db, name) {
   });
 }
 
-function getStoreForecasts(db, tmName) {
+var storeCount = 0;
+var storesAddedCount = 0;
+var tableData = [];
+
+
+async function getStorePredictions(db, predictionRef, storeKey, tmName) {
+  const test = onValue(predictionRef, (predSnap) => {
+    const predictionKeySnap = predSnap.val();
+
+    for (var predictionKey in predictionKeySnap) {
+      //console.log("PREDICTION KEY" + predictionKey + storeKey);
+      tableData.push([predictionKey.replace('-',''), roundToTwo(predictionKeySnap[predictionKey]), storeKey]);
+    }
+
+    storesAddedCount += 1;
+
+    if (storesAddedCount == storeCount) {
+      new Grid({
+        columns: [
+          "SKU",
+          {
+            name: 'Proj. Revenue ($)',
+            sort: {
+              compare: (a, b) => {
+
+                const floatA = parseFloat(a);
+                const floatB = parseFloat(b);
+
+                if (floatA > floatB) {
+                  return 1;
+                } else if (floatA < floatB) {
+                  return -1;
+                } else {
+                  return 0;
+                }
+              }
+            }
+          },
+          {
+            name: "Store",
+            formatter: (cell) => {
+                return html(`<a href="/store/${cell.slice(4)}" target="_blank">${cell}</a>`);
+            }
+          }
+        ],
+        //search: true,
+        pagination: true,
+        sort: true,
+        data: tableData,
+      }).render(document.getElementById("table-wrap"));
+
+      getMetrics(db, tmName);
+    }
+  });
+}
+
+function getTerritoryForecasts(db, tmName) {
+
+  storeCount = 0;
+  storesAddedCount = 0;
+  tableData = [];
 
   const date = new Date();
   const curPeriod = getPeriod(date.getMonth(), date.getDate(), date.getFullYear());
   const storeRef = ref(db, `Predicted_Data/FY${curPeriod[2]}P${curPeriod[0]}W${curPeriod[1]}/${tmName}`);
 
-  const forecastWait = onValue(storeRef, (snapshot) => {
-    const snapdata = snapshot.val();
-    var skuList = [];
-    var salesList = [];
-    var revList = [];
+  const storelistRef = ref(db, `TM_List/${tmName}`);
 
-    const topHTML = `
-      <div class = "territory-top">
-        ${tmName}'s <span class="light-blue">Territory Overview</span>
-      </div>
-      <div class="home-row">
-        <div class="details-widget">
-          <h1 style="margin-bottom: 40px; color: white;">Quick Look Metrics</h1>
-          <h1 class="detail-head" style="padding-top: 10px;">RTD<span class="detail-right" id="mktshare-rtd"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-          <h1 class="detail-head">Seltzer<span class="detail-right" id="mktshare-seltz"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-          <h1 class="detail-head">White Claw<span class="detail-right" id="mktshare-wc"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-          <h1 class="detail-head" style="margin-bottom: 10px;">Tea<span class="detail-right" id="mktshare-tea"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-        </div>
-        <div class="table-widget">
-          <h1 style="margin-bottom: 40px; color: white;">Territory Opportunities</h1>
-    `;
+  onValue(storelistRef, async (snapshot) => {
+    const storelistSnap = snapshot.val();
 
-    const bottomHTML = `</div></div>`;
+    for (var storeKey in storelistSnap) {
+      if (storeKey.substring(0,4) == "LCBO") {
+        storeCount += 1;
 
-    var predictionsHTML = ``;
+        console.log(storeKey);
 
-    for (var key in snapdata) {
-      skuList.push(key);
-      salesList.push(roundToTwo(snapdata[key]["Sales"]));
-      revList.push(roundToTwo(snapdata[key]["Revenue"]));
-    }
+        var tableData = [];
+        const predictionRef = ref(db, `Predicted_Data_FY/FY23/${storeKey}`);
 
-    for (var i = 0; i < skuList.length; i++) {
-      predictionsHTML += `<h2 style="margin-bottom: 0px;"><b>${skuList[i]}</b><br>REVENUE: $${revList[i]}&nbsp;&nbsp;&nbsp;SALES: ${salesList[i]}</h2>`
-
-      if (i+1 == skuList.length) {
-        predictionsHTML += "</div>";
-      } else {
-        predictionsHTML += "<br>";
+        getStorePredictions(db, predictionRef, storeKey, tmName);
       }
     }
+  })
 
-    document.querySelector("#app").innerHTML = topHTML.concat(predictionsHTML, bottomHTML);
+  /*
+  const predictionRef = ref(db, `Predicted_Data_FY/FY${curPeriod[2]}/`)
+
+  const forecastWait = onValue(storeRef, (snapshot) => {
+    const snapdata = snapshot.val();
+
+    var tableData = [];
+    for (var key in snapdata) {
+      tableData.push([key, roundToTwo(snapdata[key]["Revenue"]), roundToTwo(snapdata[key]["Sales"])]);
+    }
+
+    new Grid({
+      columns: [
+        "SKU",
+        {
+          name: 'Proj. Revenue ($)',
+          sort: {
+            compare: (a, b) => {
+
+              const floatA = parseFloat(a);
+              const floatB = parseFloat(b);
+
+              if (floatA > floatB) {
+                return 1;
+              } else if (floatA < floatB) {
+                return -1;
+              } else {
+                return 0;
+              }
+            }
+          }
+        },
+        "Store"
+      ],
+      //search: true,
+      sort: true,
+      data: tableData,
+    }).render(document.getElementById("table-wrap"));
+
     getMetrics(db, tmName);
-
   });
+  */
 }
 
 
@@ -94,7 +171,7 @@ export default class extends AbstractView {
       var tmName = `${this.params.tm}`;
       tmName = tmName.replace(/^\w/, (c) => c.toUpperCase());
 
-      getStoreForecasts(this.db, tmName);
+      getTerritoryForecasts(this.db, tmName);
 
       const baseString = `
         <div class = "territory-top">
@@ -110,12 +187,11 @@ export default class extends AbstractView {
           </div>
           <div class="table-widget">
             <h1 style="margin-bottom: 40px; color: white;">Territory Opportunities</h1>
+            <div id="table-wrap"></div>
           </div>
         </div>
       `;
 
-      const dynamString = ``;
-
-      return dynamString + baseString;
+      return baseString;
     }
 }

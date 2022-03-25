@@ -18,6 +18,8 @@
     "firebase": "^9.6.8",
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.18.1",
+    "gridjs": "^5.0.2",
+    "gridjs-react": "^5.0.2",
     "serve-favicon": "^2.5.0"
   }
 }

@@ -2,6 +2,11 @@ import AbstractView from "./AbstractView.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
 import { getPeriod, roundToTwo } from "./periodFuncs.js";
 
+// Table functions
+import { Grid, html } from "https://unpkg.com/gridjs?module";
+//import "https://unpkg.com/gridjs/dist/theme/mermaid.css";
+
+
 function getTMList(db) {
   const tmRef = ref(db, 'TM_List/');
 
@@ -40,47 +45,56 @@ function getStoreForecasts(db, storeID) {
 
   const forecastWait = onValue(storeRef, (snapshot) => {
     const snapdata = snapshot.val();
-    var skuList = [];
-    var salesList = [];
-    var revList = [];
 
-    const topHTML = `
-      <div class = "store-top">
-        ${storeID} <span class="dark-blue">&nbsp;Store Overview</span>
-      </div>
-      <div class="home-row">
-        <div class="details-widget" style="background-color: #E5F8FF">
-          <h1>Store Details</h1>
-          <br>
-          <h2 id="store-name"></h1>
-          <h2 id="store-address"></h1>
-          <h2 id="store-class"></h1>
-        </div>
-        <div class="table-widget">
-          <h1>Store Opportunities</h1>
-    `;
-
-    const bottomHTML = `      </div>`;
-
-    var predictionsHTML = ``;
-
+    var tableData = [];
     for (var key in snapdata) {
-      skuList.push(key);
-      salesList.push(roundToTwo(snapdata[key]["Sales"]));
-      revList.push(roundToTwo(snapdata[key]["Revenue"]));
+      tableData.push([key, roundToTwo(snapdata[key]["Revenue"]), roundToTwo(snapdata[key]["Sales"])]);
     }
 
-    for (var i = 0; i < skuList.length; i++) {
-      predictionsHTML += `<h2 style="margin-bottom: 0px;"><b>${skuList[i]}</b><br>REVENUE: $${revList[i]}&nbsp;&nbsp;&nbsp;SALES: ${salesList[i]}</h2>`
+    new Grid({
+      columns: [
+        "SKU",
+        {
+          name: 'Proj. Revenue ($)',
+          sort: {
+            compare: (a, b) => {
 
-      if (i+1 == skuList.length) {
-        predictionsHTML += "</div>";
-      } else {
-        predictionsHTML += "<br>";
-      }
-    }
+              const floatA = parseFloat(a);
+              const floatB = parseFloat(b);
 
-    document.querySelector("#app").innerHTML = topHTML.concat(predictionsHTML, bottomHTML);
+              if (floatA > floatB) {
+                return 1;
+              } else if (floatA < floatB) {
+                return -1;
+              } else {
+                return 0;
+              }
+            }
+          }
+        },
+        {
+          name: 'Proj. Sales (Cases)',
+          sort: {
+            compare: (a, b) => {
+
+              const floatA = parseFloat(a);
+              const floatB = parseFloat(b);
+
+              if (floatA > floatB) {
+                return 1;
+              } else if (floatA < floatB) {
+                return -1;
+              } else {
+                return 0;
+              }
+            }
+          }
+        }
+      ],
+      //search: true,
+      sort: true,
+      data: tableData,
+    }).render(document.getElementById("table-wrap"));
 
     getStoreInfo(db, storeID);
   });
@@ -110,12 +124,14 @@ export default class extends AbstractView {
         <div class="home-row">
           <div class="details-widget" style="background-color: #E5F8FF">
             <h1>Store Details</h1>
+            <br>
             <h2 id="store-name"></h1>
             <h2 id="store-address"></h1>
             <h2 id="store-class"></h1>
           </div>
           <div class="table-widget">
             <h1>Store Opportunities</h1>
+            <div id="table-wrap"></div>
           </div>
         </div>
       `;
