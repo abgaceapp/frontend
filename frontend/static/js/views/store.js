@@ -43,6 +43,49 @@ function getStoreForecasts(db, storeID) {
   const curPeriod = getPeriod(date.getMonth(), date.getDate(), date.getFullYear());
   const storeRef = ref(db, `Predicted_Data/FY${curPeriod[2]}P${curPeriod[0]}W${curPeriod[1]}/${storeID}`);
 
+  //const storeRef_fy = ref(db, `Predicted_Data/FY${curPeriod[2]}/${storeID}`);
+  const storeRef_fy = ref(db, `Predicted_Data_FY/FY23/${storeID}`);
+
+  const forecastWait = onValue(storeRef_fy, (snapshot) => {
+    const snapdata = snapshot.val();
+
+    var tableData = [];
+    for (var key in snapdata) {
+      tableData.push([key.replace('-', ''), roundToTwo(snapdata[key])]);
+    }
+
+    new Grid({
+      columns: [
+        "SKU",
+        {
+          name: 'Proj. Revenue ($)',
+          sort: {
+            compare: (a, b) => {
+
+              const floatA = parseFloat(a);
+              const floatB = parseFloat(b);
+
+              if (floatA > floatB) {
+                return 1;
+              } else if (floatA < floatB) {
+                return -1;
+              } else {
+                return 0;
+              }
+            }
+          }
+        }
+      ],
+      //search: true,
+      pagination: true,
+      sort: true,
+      data: tableData,
+    }).render(document.getElementById("table-wrap"));
+
+    getStoreInfo(db, storeID);
+  });
+
+  /*
   const forecastWait = onValue(storeRef, (snapshot) => {
     const snapdata = snapshot.val();
 
@@ -98,6 +141,7 @@ function getStoreForecasts(db, storeID) {
 
     getStoreInfo(db, storeID);
   });
+  */
 }
 
 export default class extends AbstractView {
