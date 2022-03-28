@@ -250,5 +250,6 @@ export function getPeriod(month, day, year) {
 
 export function roundToTwo(num) {
     const number = +(Math.round(num + "e+2")  + "e-2");
-    return number.toFixed(2);
+    return number.toFixed(0);
+    //return number.toFixed(2);
 }
