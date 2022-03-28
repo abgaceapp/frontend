@@ -64,3 +64,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     router();
 });
+
+import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
+
+getAuth().onAuthStateChanged(function(user) {
+  if (user) {
+    var username = user.displayName;
+
+    if (username == null) {
+      username = "Admin";
+    }
+
+    console.log("USERNAME HERE");
+    console.log(username);
+
+    document.getElementById('main-rep-name').innerHTML = username;
+    document.getElementById('menu-territory').href += username.toLowerCase();
+    document.getElementById('menu-stores').href += username.toLowerCase();
+    document.getElementById('main-rep').href = "/territory/" + username.toLowerCase();
+
+  } else {
+    console.log("NOT LOGGED IN!");
+  }
+});

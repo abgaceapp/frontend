@@ -123,6 +123,7 @@ export default class extends AbstractView {
         loadedString += `</div>`;
 
         document.querySelector("#app").innerHTML = baseString.concat(loadedString);
+
         fadeOutLoader();
       });
 

@@ -838,3 +838,102 @@ span.light-blue {
   height: 50px;
   color: white;
 }
+
+
+.opportunity-button {
+  height: 40px;
+  width: 120px;
+  border: none;
+  border-radius: 5px;
+
+  position: absolute;
+
+  margin-top: 12px;
+  right: 50px;
+
+  font-family: 'Point Bold';
+
+  cursor: pointer;
+
+  background-color: #54c8f5;
+  color: white;
+}
+
+.opportunity-button.delisted {
+  margin-right: 135px;
+  opacity: 100;
+}
+
+.opportunity-button.listed {
+  opacity: 0.5;
+}
+
+
+.toggle {
+  position: absolute;
+}
+
+.toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle .onoff {
+  color: #fff;
+  display: inline-block;
+  font-size: 15px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.slider {
+  display: inline-block;
+  cursor: pointer;
+  background-color: #333;
+  transition: 0.4s;
+  width: 400px;
+  height: 50px;
+
+  margin-top: 7px;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 30px;
+  width: 180px;
+  background-color: #fff;
+  transition: 0.4s;
+  top: 10px;
+  left: 10px;
+
+  margin-top: 7px;
+}
+
+.slide-title {
+  position: fixed;
+  margin-left: 50px;
+  margin-top: 20px;
+}
+
+input:checked + .slider {
+  background-color: blue;
+}
+
+input:checked + .slider:before {
+  transform: translateX(200px);
+}
+
+.slider.round {
+  border-radius: 5px;
+}
+.slider.round::before {
+  border-radius: 5px;
+}
+
+
+.gridjs-table {
+  width: 100%;
+}

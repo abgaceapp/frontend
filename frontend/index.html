@@ -24,6 +24,7 @@
     <script src="https://unpkg.com/gridjs-jquery/dist/gridjs.development.js"></script>
     <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
     -->
+
     <link
       rel="stylesheet"
       type="text/css"
@@ -37,8 +38,8 @@
       <a onclick="dropdownFunc()" class="right-nav"><img src="/static/img/account-icon.svg" style="height: 30px; margin-top: -10px;"></img></a>
       <div id="accountDropdown" class="dropdown-content">
         <a id="menu-account" href="/account">My Account</a>
-        <a id="menu-territory" href="/territory/andrew">My Territory</a>
-        <a id="menu-stores" href="/stores/andrew">My Stores</a>
+        <a id="menu-territory" href="/territory/">My Territory</a>
+        <a id="menu-stores" href="/stores/">My Stores</a>
       </div>
     </div>
 
@@ -48,7 +49,7 @@
 
     <div id="mySidenav" class="sidenav">
       <a href="/" class="sidenav-logo"></a>
-      <a href="/territory/overview" class="main-rep clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Andrew<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="main-rep-mini">Territory Overview</span></a>
+      <a href="/territory/overview" id="main-rep" class="main-rep clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img><span id="main-rep-name"></span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="main-rep-mini">Territory Overview</span></a>
       <a href="/territory/andrew" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Andrew</a>
       <a href="/territory/angie" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Angie</a>
       <a href="/territory/connor" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Connor</a>
@@ -69,6 +70,7 @@
     <script type="module" src="/static/js/index.js"></script>
     <script type="module" src="/static/js/views/periodFuncs.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js"></script>
+
     <script>
       function dropdownFunc() {
         document.getElementById("accountDropdown").classList.toggle("dropdown-show");

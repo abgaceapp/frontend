@@ -23,24 +23,43 @@ function getMetrics(db, name) {
   });
 }
 
+
 var storeCount = 0;
 var storesAddedCount = 0;
-var tableData = [];
+
+var checked_skus = 0;
+var checked_skus_needed = 0;
+
+var listedData = [];
+var delistedData = [];
+
+var table_grid = new Grid();
+var tm_name = "";
 
 
-async function getStorePredictions(db, predictionRef, storeKey, tmName) {
-  const test = onValue(predictionRef, (predSnap) => {
-    const predictionKeySnap = predSnap.val();
+function getListStatus(db, storeID, sku, projected) {
+  const listRef = ref(db, `Store_Data/${storeID}`);
 
-    for (var predictionKey in predictionKeySnap) {
-      //console.log("PREDICTION KEY" + predictionKey + storeKey);
-      tableData.push([predictionKey.replace('-',''), roundToTwo(predictionKeySnap[predictionKey]), storeKey]);
+  onValue(listRef, (snapshot) => {
+    if (snapshot.child(sku).exists()) {
+      console.log("CHILD VAL");
+      console.log(sku)
+      console.log(snapshot.child(sku).val());
+      if (snapshot.child(sku).val() != 'D') {
+        listedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), roundToTwo(projected), storeID]);
+      } else {
+        delistedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), roundToTwo(projected), storeID]);
+      }
+
+    } else {
+      console.log("DELISTED");
+      delistedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), roundToTwo(projected), storeID]);
     }
+    checked_skus += 1;
 
-    storesAddedCount += 1;
+    if (checked_skus == checked_skus_needed) {
 
-    if (storesAddedCount == storeCount) {
-      new Grid({
+      table_grid = new Grid({
         columns: [
           "SKU",
           {
@@ -71,19 +90,65 @@ async function getStorePredictions(db, predictionRef, storeKey, tmName) {
         //search: true,
         pagination: true,
         sort: true,
-        data: tableData,
+        data: delistedData,
       }).render(document.getElementById("table-wrap"));
 
-      getMetrics(db, tmName);
+      getMetrics(db, tm_name);
     }
   });
 }
 
-function getTerritoryForecasts(db, tmName) {
+/*
+async function getStorePredictions(db, predictionRef, storeKey, tmName) {
+  const test = onValue(predictionRef, (predSnap) => {
+    const predictionKeySnap = predSnap.val();
 
+    for (var predictionKey in predictionKeySnap) {
+      //console.log("PREDICTION KEY" + predictionKey + storeKey);
+      tableData.push([predictionKey.replace('-',''), roundToTwo(predictionKeySnap[predictionKey]), storeKey]);
+    }
+
+    storesAddedCount += 1;
+
+    if (storesAddedCount == storeCount) {
+
+    }
+  });
+}
+*/
+
+function getStoreForecasts(db, storeID, tmName) {
+  const date = new Date();
+  const curPeriod = getPeriod(date.getMonth(), date.getDate(), date.getFullYear());
+  const storeRef = ref(db, `Predicted_Data/FY${curPeriod[2]}P${curPeriod[0]}W${curPeriod[1]}/${storeID}`);
+
+  //const storeRef_fy = ref(db, `Predicted_Data/FY${curPeriod[2]}/${storeID}`);
+  const storeRef_fy = ref(db, `Predicted_Data_FY/FY23/${storeID}`);
+
+  const forecastWait = onValue(storeRef_fy, (snapshot) => {
+    const snapdata = snapshot.val();
+
+    var tableData = [];
+    for (var key in snapdata) {
+      //tableData.push([key.replace('-', ''), roundToTwo(snapdata[key])]);
+      checked_skus_needed += 1;
+    }
+
+    for (var key in snapdata) {
+      tm_name = tmName;
+      getListStatus(db, storeID, key, roundToTwo(snapdata[key]));
+    }
+  });
+}
+
+
+function getTerritoryForecasts(db, tmName) {
   storeCount = 0;
   storesAddedCount = 0;
-  tableData = [];
+  //tableData = [];
+
+  listedData = [];
+  delistedData = [];
 
   const date = new Date();
   const curPeriod = getPeriod(date.getMonth(), date.getDate(), date.getFullYear());
@@ -103,7 +168,8 @@ function getTerritoryForecasts(db, tmName) {
         var tableData = [];
         const predictionRef = ref(db, `Predicted_Data_FY/FY23/${storeKey}`);
 
-        getStorePredictions(db, predictionRef, storeKey, tmName);
+        //getStorePredictions(db, predictionRef, storeKey, tmName);
+        getStoreForecasts(db, storeKey, tmName);
       }
     }
   })
@@ -173,6 +239,36 @@ export default class extends AbstractView {
 
       getTerritoryForecasts(this.db, tmName);
 
+
+      var showing_listed = false;
+
+      setTimeout(function() {
+        const delistbtn = document.getElementById('delist-button');
+        const listbtn = document.getElementById('list-button');
+
+        delistbtn.addEventListener('click', () => {
+          if (showing_listed) {
+            // Show delist button
+            delistbtn.style.opacity = 1;
+            listbtn.style.opacity = 0.5;
+            showing_listed = false;
+
+            table_grid.updateConfig({data: delistedData}).forceRender();
+          }
+        });
+
+        listbtn.addEventListener('click', () => {
+          if (!showing_listed) {
+            // Show listing button
+            listbtn.style.opacity = 1;
+            delistbtn.style.opacity = 0.5;
+            showing_listed = true;
+
+            table_grid.updateConfig({data: listedData}).forceRender();
+          }
+        });
+      }, 1000);
+
       const baseString = `
         <div class = "territory-top">
           ${tmName}'s <span class="light-blue">Territory Overview</span>
@@ -186,7 +282,11 @@ export default class extends AbstractView {
             <h1 class="detail-head" style="margin-bottom: 10px;">Tea<span class="detail-right" id="mktshare-tea"></span><br><span style="font-size: 15px;">Market Share</span></h1>
           </div>
           <div class="table-widget">
-            <h1 style="margin-bottom: 40px; color: white;">Territory Opportunities</h1>
+            <div style="display: inline-block;">
+              <h1 style="display: inline-block;">Territory Opportunities</h1>
+              <button id="delist-button" class="opportunity-button delisted">DELISTED</button>
+              <button id="list-button" class="opportunity-button listed">LISTED</button>
+            </div>
             <div id="table-wrap"></div>
           </div>
         </div>
