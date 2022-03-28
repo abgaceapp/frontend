@@ -2,6 +2,7 @@ import AbstractView from "./AbstractView.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
 import { getPeriod, roundToTwo } from "./periodFuncs.js";
 
+import { Grid, html } from "https://unpkg.com/gridjs?module";
 
 function getStoreList(db, tmName) {
   const date = new Date();
@@ -22,11 +23,16 @@ function getStoreList(db, tmName) {
 
     var predictionsHTML = ``;
 
+
+    var storeData = [];
+
     var i = 0;
     for (var key in snapdata) {
       if (key.startsWith("LCBO")) {
         const storeCode = key.replace('LCBO', '');
         predictionsHTML += `<a style="margin-bottom: 0px;" href="/store/${storeCode}">LCBO #${storeCode}</a>`
+
+        storeData.push([`LCBO #${storeCode}`]);
 
         if (i+1 == snapdata.length) {
           predictionsHTML += "</div>";
@@ -38,7 +44,24 @@ function getStoreList(db, tmName) {
       i += 1;
     }
 
-    document.querySelector("#app").innerHTML = topHTML.concat(predictionsHTML, bottomHTML);
+    console.log(storeData);
+
+    new Grid({
+      columns: [
+        {
+          name: "LCBO Store ID",
+          formatter: (cell) => {
+              return html(`<a href="/store/${cell.slice(5).replace('#', '')}" target="_blank">${cell}</a>`);
+          }
+        }
+      ],
+      search: true,
+      sort: true,
+      pagination: true,
+      data: storeData,
+    }).render(document.getElementById("table-wrapper"));
+
+    //document.querySelector("#app").innerHTML = topHTML.concat(predictionsHTML, bottomHTML);
     fadeOutLoader();
   });
 }
@@ -65,6 +88,7 @@ export default class extends AbstractView {
         <div class="home-row">
           <div class="table-widget" style="width: 100%;">
             <h1>${tmName}'s<span class="light-blue">&nbsp;Stores</span></h1>
+            <div id="table-wrapper"></div>
           </div>
         </div>
       `;

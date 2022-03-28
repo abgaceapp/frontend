@@ -81,9 +81,9 @@ export default class extends AbstractView {
 
         for (var i = 0; i < dollar_List.length; i++) {
           if (dollar_NumList[i] < 0) {
-            loadedString += `<p class="leaderboard-row">${dollar_List[i]} <span class="leaderboard-row-right" style="color:#FE685E;">$${Math.abs(dollar_NumList[i])}</span></p>`;
+            loadedString += `<p class="leaderboard-row">${dollar_List[i]} <span class="leaderboard-row-right" style="color:#FE685E;">${Math.abs(dollar_NumList[i])}</span></p>`;
           } else {
-            loadedString += `<p class="leaderboard-row">${dollar_List[i]} <span class="leaderboard-row-right">$${dollar_NumList[i]}</span></p>`;
+            loadedString += `<p class="leaderboard-row">${dollar_List[i]} <span class="leaderboard-row-right">${dollar_NumList[i]}</span></p>`;
           }
           if (i + 1 == dollar_List.length) {
             loadedString += `<p class="leaderboard-row"></p></div>`

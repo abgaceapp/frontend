@@ -29,14 +29,14 @@ function getListStatus(db, storeID, sku, projected) {
       console.log(sku)
       console.log(snapshot.child(sku).val());
       if (snapshot.child(sku).val() != 'D') {
-        listedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), roundToTwo(projected)]);
+        listedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), '$' + roundToTwo(projected)]);
       } else {
-        delistedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), roundToTwo(projected)]);
+        delistedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), '$' + roundToTwo(projected)]);
       }
 
     } else {
       console.log("DELISTED");
-      delistedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), roundToTwo(projected)]);
+      delistedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), '$' + roundToTwo(projected)]);
     }
     checked_skus += 1;
 
@@ -46,12 +46,12 @@ function getListStatus(db, storeID, sku, projected) {
         columns: [
           "SKU",
           {
-            name: 'Proj. Revenue ($)',
+            name: 'FY Forecast (FY23)',
             sort: {
               compare: (a, b) => {
 
-                const floatA = parseFloat(a);
-                const floatB = parseFloat(b);
+                const floatA = parseFloat(a.replace('$', ''));
+                const floatB = parseFloat(b.replace('$', ''));
 
                 if (floatA > floatB) {
                   return 1;
