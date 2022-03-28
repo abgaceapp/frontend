@@ -52,6 +52,21 @@ function getStoreList(db, tmName) {
           name: "LCBO Store ID",
           formatter: (cell) => {
               return html(`<a href="/store/${cell.slice(5).replace('#', '')}" target="_blank">${cell}</a>`);
+          },
+          sort: {
+            compare: (a, b) => {
+
+              const intA = parseInt(a.replace('LCBO #', ''));
+              const intB = parseInt(b.replace('LCBO #', ''));
+
+              if (intA > intB) {
+                return 1;
+              } else if (intA < intB) {
+                return -1;
+              } else {
+                return 0;
+              }
+            }
           }
         }
       ],
