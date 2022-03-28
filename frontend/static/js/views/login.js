@@ -1,6 +1,23 @@
 import AbstractView from "./AbstractView.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
+
+
+const displaynames = {
+  "gwilliams@acebeveragegroup.com": "Garrett",
+  "ajabar@acebeveragegroup.com": "Andrew",
+  "avergeer@acebeveragegroup.com": "Angie",
+  "cfranke@acebeveragegroup.com": "Connor",
+  "cgemmell@acebeveragegroup.com": "Courtney",
+  "ihetherington@acebeveragegroup.com": "Isaac",
+  "jhetherington@acebeveragegroup.com": "Jacob",
+  "jsavard@acebeveragegroup.com": "Josee",
+  "jjennings@acebeveragegroup.com": "Justine",
+  "lroy@acebeveragegroup.com": "Leigh",
+  "mkerr@acebeveragegroup.com": "Mark",
+  "nbruni@acebeveragegroup.com": "Nick",
+  "tokeefe@acebeveragegroup.com": "Taylor"
+};
 
 
 function logSubmit() {

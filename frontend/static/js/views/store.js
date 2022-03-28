@@ -19,6 +19,62 @@ function getTMList(db) {
   });
 }
 
+function getListStatus(db, storeID, sku, projected) {
+
+  const listRef = ref(db, `Store_Data/${storeID}`);
+
+  onValue(listRef, (snapshot) => {
+    if (snapshot.child(sku).exists()) {
+      console.log("CHILD VAL");
+      console.log(sku)
+      console.log(snapshot.child(sku).val());
+      if (snapshot.child(sku).val() != 'D') {
+        listedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), roundToTwo(projected)]);
+      } else {
+        delistedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), roundToTwo(projected)]);
+      }
+
+    } else {
+      console.log("DELISTED");
+      delistedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), roundToTwo(projected)]);
+    }
+    checked_skus += 1;
+
+    if (checked_skus == checked_skus_needed) {
+
+      table_grid = new Grid({
+        columns: [
+          "SKU",
+          {
+            name: 'Proj. Revenue ($)',
+            sort: {
+              compare: (a, b) => {
+
+                const floatA = parseFloat(a);
+                const floatB = parseFloat(b);
+
+                if (floatA > floatB) {
+                  return 1;
+                } else if (floatA < floatB) {
+                  return -1;
+                } else {
+                  return 0;
+                }
+              }
+            }
+          }
+        ],
+        //search: true,
+        pagination: true,
+        sort: true,
+        data: delistedData,
+      }).render(document.getElementById("table-wrap"));
+
+      getStoreInfo(db, storeID);
+    }
+  });
+}
+
 function getStoreInfo(db, storeID) {
   console.log("GETTING STORE INFO");
 
@@ -37,6 +93,16 @@ function getStoreInfo(db, storeID) {
   });
 }
 
+
+var listedData = [];
+var delistedData = [];
+
+var checked_skus = 0;
+var checked_skus_needed = 0;
+
+var table_grid = new Grid();
+
+
 function getStoreForecasts(db, storeID) {
 
   const date = new Date();
@@ -51,38 +117,13 @@ function getStoreForecasts(db, storeID) {
 
     var tableData = [];
     for (var key in snapdata) {
-      tableData.push([key.replace('-', ''), roundToTwo(snapdata[key])]);
+      //tableData.push([key.replace('-', ''), roundToTwo(snapdata[key])]);
+      checked_skus_needed += 1;
     }
 
-    new Grid({
-      columns: [
-        "SKU",
-        {
-          name: 'Proj. Revenue ($)',
-          sort: {
-            compare: (a, b) => {
-
-              const floatA = parseFloat(a);
-              const floatB = parseFloat(b);
-
-              if (floatA > floatB) {
-                return 1;
-              } else if (floatA < floatB) {
-                return -1;
-              } else {
-                return 0;
-              }
-            }
-          }
-        }
-      ],
-      //search: true,
-      pagination: true,
-      sort: true,
-      data: tableData,
-    }).render(document.getElementById("table-wrap"));
-
-    getStoreInfo(db, storeID);
+    for (var key in snapdata) {
+      getListStatus(db, storeID, key, roundToTwo(snapdata[key]));
+    }
   });
 
   /*
@@ -161,6 +202,36 @@ export default class extends AbstractView {
 
       getStoreForecasts(this.db, `LCBO${storeID}`);
 
+
+      var showing_listed = false;
+
+      setTimeout(function() {
+        const delistbtn = document.getElementById('delist-button');
+        const listbtn = document.getElementById('list-button');
+
+        delistbtn.addEventListener('click', () => {
+          if (showing_listed) {
+            // Show delist button
+            delistbtn.style.opacity = 1;
+            listbtn.style.opacity = 0.5;
+            showing_listed = false;
+
+            table_grid.updateConfig({data: delistedData}).forceRender();
+          }
+        });
+
+        listbtn.addEventListener('click', () => {
+          if (!showing_listed) {
+            // Show listing button
+            listbtn.style.opacity = 1;
+            delistbtn.style.opacity = 0.5;
+            showing_listed = true;
+
+            table_grid.updateConfig({data: listedData}).forceRender();
+          }
+        });
+      }, 1000);
+
       return `
         <div class = "store-top">
           LCBO #${storeID} <span class="dark-blue">&nbsp;Store Overview</span>
@@ -174,7 +245,11 @@ export default class extends AbstractView {
             <h2 id="store-class"></h1>
           </div>
           <div class="table-widget">
-            <h1>Store Opportunities</h1>
+            <div style="display: inline-block;">
+              <h1 style="display: inline-block;">Store Opportunities</h1>
+              <button id="delist-button" class="opportunity-button delisted">DELISTED</button>
+              <button id="list-button" class="opportunity-button listed">LISTED</button>
+            </div>
             <div id="table-wrap"></div>
           </div>
         </div>
