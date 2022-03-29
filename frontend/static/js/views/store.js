@@ -23,11 +23,14 @@ function getListStatus(db, storeID, sku, projected) {
 
   const listRef = ref(db, `Store_Data/${storeID}`);
 
+  if (sku == "Cottages Springs Mixed 24 Pack") {
+    sku = "Cottage Springs Mixed 24 Pack";
+  } else if (sku == "Cottage Springs Mango Vodka Water -") {
+    sku = "Cottage Springs Mango Vodka Water"
+  }
+
   onValue(listRef, (snapshot) => {
     if (snapshot.child(sku).exists()) {
-      console.log("CHILD VAL");
-      console.log(sku)
-      console.log(snapshot.child(sku).val());
       if (snapshot.child(sku).val() != 'D') {
         listedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), '$' + roundToTwo(projected)]);
       } else {
@@ -35,7 +38,6 @@ function getListStatus(db, storeID, sku, projected) {
       }
 
     } else {
-      console.log("DELISTED");
       delistedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), '$' + roundToTwo(projected)]);
     }
     checked_skus += 1;

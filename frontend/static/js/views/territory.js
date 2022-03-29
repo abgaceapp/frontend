@@ -55,9 +55,6 @@ function getListStatus(db, storeID, sku, projected) {
       }
 
     } else {
-      console.log("DELISTED");
-      console.log(sku);
-      console.log(storeID);
       delistedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), '$' + roundToTwo(projected), storeID]);
     }
     checked_skus += 1;
