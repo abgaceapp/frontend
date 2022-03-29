@@ -40,11 +40,14 @@ var tm_name = "";
 function getListStatus(db, storeID, sku, projected) {
   const listRef = ref(db, `Store_Data/${storeID}`);
 
+  if (sku == "Cottages Springs Mixed 24 Pack") {
+    sku = "Cottage Springs Mixed 24 Pack";
+  } else if (sku == "Cottage Springs Mango Vodka Water -") {
+    sku = "Cottage Springs Mango Vodka Water"
+  }
+
   onValue(listRef, (snapshot) => {
     if (snapshot.child(sku).exists()) {
-      console.log("CHILD VAL");
-      console.log(sku)
-      console.log(snapshot.child(sku).val());
       if (snapshot.child(sku).val() != 'D') {
         listedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), '$' + roundToTwo(projected), storeID]);
       } else {
@@ -53,6 +56,8 @@ function getListStatus(db, storeID, sku, projected) {
 
     } else {
       console.log("DELISTED");
+      console.log(sku);
+      console.log(storeID);
       delistedData.push([sku.replace('-', '').replace('Cottages', 'Cottage'), '$' + roundToTwo(projected), storeID]);
     }
     checked_skus += 1;
@@ -162,8 +167,6 @@ function getTerritoryForecasts(db, tmName) {
     for (var storeKey in storelistSnap) {
       if (storeKey.substring(0,4) == "LCBO") {
         storeCount += 1;
-
-        console.log(storeKey);
 
         var tableData = [];
         const predictionRef = ref(db, `Predicted_Data_FY/FY23/${storeKey}`);
