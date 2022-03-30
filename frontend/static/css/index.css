@@ -868,6 +868,13 @@ span.light-blue {
   opacity: 0.5;
 }
 
+.opportunity-button.csv {
+  margin-right: 270px;
+  opacity: 100;
+
+  background-color: #0f9d58;
+}
+
 
 .toggle {
   position: absolute;
