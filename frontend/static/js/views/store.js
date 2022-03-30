@@ -67,7 +67,10 @@ function getListStatus(db, storeID, sku, projected) {
           }
         ],
         //search: true,
-        pagination: true,
+        pagination: {
+          enabled: true,
+          limit: 25
+        },
         sort: true,
         data: delistedData,
       }).render(document.getElementById("table-wrap"));
@@ -208,6 +211,32 @@ export default class extends AbstractView {
       var showing_listed = false;
 
       setTimeout(function() {
+        const downloadcsvbtn = document.getElementById('download-csv-button');
+
+        downloadcsvbtn.addEventListener('click', () => {
+          var tabledata = [];
+          var filename = `LCBO${storeID}`;
+          if (showing_listed) {
+            tabledata = listedData;
+            tabledata.unshift(['SKU', 'FY Forecast (FY23)'])
+            filename += '_listed.csv'
+          } else {
+            tabledata = delistedData;
+            tabledata.unshift(['SKU', 'FY Forecast (FY23)'])
+            filename += '_delisted.csv'
+          }
+
+          let csvContent = "data:text/csv;charset=utf-8,"
+              + tabledata.map(e => e.join(",")).join("\n");
+              var encodedUri = encodeURI(csvContent);
+          var link = document.createElement("a");
+          link.setAttribute("href", encodedUri);
+          link.setAttribute("download", filename);
+          document.body.appendChild(link); // Required for FF
+
+          link.click(); // This will download the data file named "my_data.csv".
+        });
+
         const delistbtn = document.getElementById('delist-button');
         const listbtn = document.getElementById('list-button');
 
@@ -249,6 +278,7 @@ export default class extends AbstractView {
           <div class="table-widget">
             <div style="display: inline-block;">
               <h1 style="display: inline-block;">Store Opportunities</h1>
+              <button class="opportunity-button csv" id="download-csv-button">Export CSV</button>
               <button id="delist-button" class="opportunity-button delisted">DELISTED</button>
               <button id="list-button" class="opportunity-button listed">LISTED</button>
             </div>
