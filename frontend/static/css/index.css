@@ -202,7 +202,7 @@ span.light-blue {
   font-size: 15px;
 }
 
-.loginForm input, #login-btn {
+.loginForm input, #login-btn, #forgot-pass-btn {
   width: 90%;
   height: 40px;
   margin-bottom: 40px;
@@ -225,6 +225,23 @@ span.light-blue {
   background-color: #023C5A;
   height: 60px;
 
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding-left: 0px;
+
+  font-family: 'Point Extra';
+  font-size: 18px;
+
+  cursor: pointer;
+}
+
+.loginForm #forgot-pass-btn {
+  color: white;
+  background-color: lightgray;
+  height: 50px;
+
+  border: none;
   border-radius: 5px;
   margin-bottom: 50px;
   padding-left: 0px;

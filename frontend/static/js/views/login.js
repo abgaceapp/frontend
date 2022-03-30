@@ -47,38 +47,18 @@ function logSubmit() {
 
 function addListen() {
   document.getElementById("login-btn").addEventListener("click", logSubmit);
+  document.getElementById("forgot-pass-btn").addEventListener("click", forgotPass);
 }
 
-function toggleSignIn() {
-  if (firebase.auth().currentUser) {
-    firebase.auth().signOut();
+function forgotPass() {
+  const email = document.getElementById('email-form').value;
 
-  } else {
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
-    if (email.length < 4) {
-      alert('Please enter an email address.');
-      return;
-    }
-    if (password.length < 4) {
-      alert('Please enter a password.');
-      return;
-    }
-    // Sign in with email and pass.
-    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      if (errorCode === 'auth/wrong-password') {
-        alert('Wrong password.');
-      } else {
-        alert(errorMessage);
-      }
-      console.log(error);
-      document.getElementById('quickstart-sign-in').disabled = false;
-    });
-  }
-  document.getElementById('quickstart-sign-in').disabled = true;
+  sendPasswordResetEmail(getAuth(), email).then(() => {
+    toastfs.success('Reset link sent to your email!');
+
+  }).catch(function(error) {
+    toastfs.error("Oops! Please try again!");
+  });
 }
 
 
@@ -120,6 +100,7 @@ export default class extends AbstractView {
             <p>Password</p>
             <input type="password" id="pass-form" required>
             <button type='button' id="login-btn">Log In</button>
+            <button type='button' id="forgot-pass-btn">Forgot Password?</button>
         	</form>
         </div>
       </div>
