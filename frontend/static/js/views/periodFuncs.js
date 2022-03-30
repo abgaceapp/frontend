@@ -253,3 +253,7 @@ export function roundToTwo(num) {
     return number.toFixed(0);
     //return number.toFixed(2);
 }
+
+export function numberWithCommas(x) {
+    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}

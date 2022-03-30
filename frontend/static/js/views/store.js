@@ -1,6 +1,6 @@
 import AbstractView from "./AbstractView.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
-import { getPeriod, roundToTwo } from "./periodFuncs.js";
+import { getPeriod, roundToTwo, numberWithCommas } from "./periodFuncs.js";
 
 // Table functions
 import { Grid, html } from "https://unpkg.com/gridjs?module";
@@ -63,6 +63,9 @@ function getListStatus(db, storeID, sku, projected) {
                   return 0;
                 }
               }
+            },
+            formatter: (cell) => {
+                return numberWithCommas(cell);
             }
           }
         ],
