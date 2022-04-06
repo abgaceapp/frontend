@@ -92,7 +92,9 @@ function getListStatus(db, storeID, sku, projected) {
             }
           }
         ],
-        search: true,
+        search: {
+          selector: (cell, rowIndex, cellIndex) => (cellIndex == 2 || cellIndex == 0) ? cell : 0
+        },
         pagination: {
           enabled: true,
           limit: 25
