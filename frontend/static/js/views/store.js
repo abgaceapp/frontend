@@ -7,6 +7,26 @@ import { Grid, html } from "https://unpkg.com/gridjs?module";
 //import "https://unpkg.com/gridjs/dist/theme/mermaid.css";
 
 
+
+function getMetrics(db, storenum) {
+  const metricRef = ref(db, `Store_Metrics/${storenum}`);
+
+  onValue(metricRef, (snapshot) => {
+    const data = snapshot.val();
+
+    if (data != null) {
+      document.querySelector("#mktshare-rtd").innerHTML = `${data["MktShare_RTD"]}%`;
+      document.querySelector("#mktshare-wc").innerHTML = `${data["MktShare_WC"]}%`;
+    } else {
+      document.querySelector("#mktshare-rtd").innerHTML = `N/A`;
+      document.querySelector("#mktshare-wc").innerHTML = `N/A`;
+    }
+
+    fadeOutLoader();
+  });
+}
+
+
 function getTMList(db) {
   const tmRef = ref(db, 'TM_List/');
 
@@ -97,7 +117,7 @@ function getStoreInfo(db, storeID) {
       console.log(`${key} ... ${data[key]}`);
     }
 
-    fadeOutLoader();
+    getMetrics(db, storeID);
   });
 }
 
@@ -271,12 +291,19 @@ export default class extends AbstractView {
           LCBO #${storeID} <span class="dark-blue">&nbsp;Store Overview</span>
         </div>
         <div class="home-row">
-          <div class="details-widget" style="background-color: #E5F8FF">
-            <h1>Store Details</h1>
-            <br>
-            <h2 id="store-name"></h1>
-            <h2 id="store-address"></h1>
-            <h2 id="store-class"></h1>
+          <div style="display: inline">
+            <div class="details-widget" style="background: linear-gradient(180deg, #003b5c 75px, #E5F8FF 75px); width: 22vw;">
+              <h1>Store Details</h1>
+              <br>
+              <h2 id="store-name"></h1>
+              <h2 id="store-address"></h1>
+              <h2 id="store-class"></h1>
+            </div>
+            <div class="details-widget" style="width: 22vw; margin-top: 20px;">
+              <h1 style="margin-bottom: 40px; color: white;">Store Metrics</h1>
+              <h1 class="detail-head" style="padding-top: 10px;">RTD<span class="detail-right" id="mktshare-rtd"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+              <h1 class="detail-head">White Claw<span class="detail-right" id="mktshare-wc"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+            </div>
           </div>
           <div class="table-widget">
             <div style="display: inline-block;">
