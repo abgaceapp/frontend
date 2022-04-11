@@ -7,9 +7,11 @@ import { Grid, html } from "https://unpkg.com/gridjs?module";
 //import "https://unpkg.com/gridjs/dist/theme/mermaid.css";
 
 
-
 function getMetrics(db, storenum) {
-  const metricRef = ref(db, `Store_Metrics/${storenum}`);
+
+  fadeOutLoader();
+
+  const metricRef = ref(db, `Agency_Store_Metrics/${storenum}`);
 
   onValue(metricRef, (snapshot) => {
     const data = snapshot.val();
@@ -22,12 +24,56 @@ function getMetrics(db, storenum) {
       document.querySelector("#mktshare-wc").innerHTML = `N/A`;
     }
 
-    fadeOutLoader();
+    //fadeOutLoader();
   });
 }
 
+
+function waitAllPredictions(db, storeID) {
+    checked_skus += 1;
+
+    if (checked_skus == checked_skus_needed) {
+      table_grid = new Grid({
+        columns: [
+          "SKU",
+          {
+            name: 'FY Forecast (FY23)',
+            sort: {
+              compare: (a, b) => {
+
+                const floatA = parseFloat(a.replace('$', ''));
+                const floatB = parseFloat(b.replace('$', ''));
+
+                if (floatA > floatB) {
+                  return 1;
+                } else if (floatA < floatB) {
+                  return -1;
+                } else {
+                  return 0;
+                }
+              }
+            },
+            formatter: (cell) => {
+                return numberWithCommas(cell);
+            }
+          }
+        ],
+        //search: true,
+        pagination: {
+          enabled: true,
+          limit: 25
+        },
+        sort: true,
+        data: allPredictions,
+      }).render(document.getElementById("table-wrap"));
+
+      getStoreInfo(db, storeID);
+    }
+}
+
+/*
 function getListStatus(db, storeID, sku, projected) {
-  const listRef = ref(db, `Store_Data/${storeID}`);
+  const listRef = ref(db, `Agency_Store_Data/${storeID}`);
 
   if (sku == "Cottages Springs Mixed 24 Pack") {
     sku = "Cottage Springs Mixed 24 Pack";
@@ -88,11 +134,12 @@ function getListStatus(db, storeID, sku, projected) {
     }
   });
 }
+*/
 
 function getStoreInfo(db, storeID) {
   console.log("GETTING STORE INFO");
 
-  const storeRef = ref(db, `Store_List/${storeID}`);
+  const storeRef = ref(db, `Agency_Store_List/${storeID}`);
 
   onValue(storeRef, (snapshot) => {
     const data = snapshot.val();
@@ -109,8 +156,10 @@ function getStoreInfo(db, storeID) {
 }
 
 
-var listedData = [];
-var delistedData = [];
+var allPredictions = [];
+
+//var listedData = [];
+//var delistedData = [];
 
 var checked_skus = 0;
 var checked_skus_needed = 0;
@@ -122,10 +171,10 @@ function getStoreForecasts(db, storeID) {
 
   const date = new Date();
   const curPeriod = getPeriod(date.getMonth(), date.getDate(), date.getFullYear());
-  const storeRef = ref(db, `Predicted_Data/FY${curPeriod[2]}P${curPeriod[0]}W${curPeriod[1]}/${storeID}`);
+  //const storeRef = ref(db, `Agency_Predicted_Data/FY${curPeriod[2]}P${curPeriod[0]}W${curPeriod[1]}/${storeID}`);
 
   //const storeRef_fy = ref(db, `Predicted_Data/FY${curPeriod[2]}/${storeID}`);
-  const storeRef_fy = ref(db, `Predicted_Data_FY/FY23/${storeID}`);
+  const storeRef_fy = ref(db, `Agency_Predicted_Data_FY/FY23/${storeID}`);
 
   const forecastWait = onValue(storeRef_fy, (snapshot) => {
     const snapdata = snapshot.val();
@@ -137,83 +186,29 @@ function getStoreForecasts(db, storeID) {
     }
 
     for (var key in snapdata) {
-      getListStatus(db, storeID, key, roundToTwo(snapdata[key]));
+      allPredictions.push([key.replace('-', '').replace('Cottages', 'Cottage'), '$' + roundToTwo(snapdata[key])]);
+      waitAllPredictions(db, storeID);
+
+      console.log("WAITING");
+      //getListStatus(db, storeID, key, roundToTwo(snapdata[key]));
     }
   });
-
-  /*
-  const forecastWait = onValue(storeRef, (snapshot) => {
-    const snapdata = snapshot.val();
-
-    var tableData = [];
-    for (var key in snapdata) {
-      tableData.push([key, roundToTwo(snapdata[key]["Revenue"]), roundToTwo(snapdata[key]["Sales"])]);
-    }
-
-    new Grid({
-      columns: [
-        "SKU",
-        {
-          name: 'Proj. Revenue ($)',
-          sort: {
-            compare: (a, b) => {
-
-              const floatA = parseFloat(a);
-              const floatB = parseFloat(b);
-
-              if (floatA > floatB) {
-                return 1;
-              } else if (floatA < floatB) {
-                return -1;
-              } else {
-                return 0;
-              }
-            }
-          }
-        },
-        {
-          name: 'Proj. Sales (Cases)',
-          sort: {
-            compare: (a, b) => {
-
-              const floatA = parseFloat(a);
-              const floatB = parseFloat(b);
-
-              if (floatA > floatB) {
-                return 1;
-              } else if (floatA < floatB) {
-                return -1;
-              } else {
-                return 0;
-              }
-            }
-          }
-        }
-      ],
-      //search: true,
-      sort: true,
-      data: tableData,
-    }).render(document.getElementById("table-wrap"));
-
-    getStoreInfo(db, storeID);
-  });
-  */
 }
 
 export default class extends AbstractView {
 
     constructor(params) {
         super(params);
-        this.setTitle(`LCBO${this.params.id} Overview`);
+        this.setTitle(`Agency${this.params.id} Overview`);
     }
 
     async getHtml() {
-      document.querySelector("body").style.backgroundImage = "url('../static/img/white_bg.png')";
+      document.querySelector("body").style.backgroundImage = "url('../static/img/green_bg.png')";
       document.getElementById("aceapp-header").style.visibility = "visible";
 
       const storeID = this.params.id;
 
-      getStoreForecasts(this.db, `LCBO${storeID}`);
+      getStoreForecasts(this.db, `Agency${storeID}`);
 
 
       var showing_listed = false;
@@ -223,7 +218,9 @@ export default class extends AbstractView {
 
         downloadcsvbtn.addEventListener('click', () => {
           var tabledata = [];
-          var filename = `LCBO${storeID}`;
+          var filename = `Agency${storeID}`;
+
+          /*
           if (showing_listed) {
             tabledata = listedData;
             tabledata.unshift(['SKU', 'FY Forecast (FY23)'])
@@ -233,6 +230,11 @@ export default class extends AbstractView {
             tabledata.unshift(['SKU', 'FY Forecast (FY23)'])
             filename += '_delisted.csv'
           }
+          */
+
+          tabledata = allPredictions;
+          tabledata.unshift(['SKU', 'FY Forecast (FY23)'])
+          filename += '_all.csv';
 
           let csvContent = "data:text/csv;charset=utf-8,"
               + tabledata.map(e => e.join(",")).join("\n");
@@ -242,9 +244,11 @@ export default class extends AbstractView {
           link.setAttribute("download", filename);
           document.body.appendChild(link); // Required for FF
 
-          link.click(); // This will download the data file named "my_data.csv".
+          link.click(); // Downloads file
         });
+      }, 1000);
 
+        /*
         const delistbtn = document.getElementById('delist-button');
         const listbtn = document.getElementById('list-button');
 
@@ -270,32 +274,33 @@ export default class extends AbstractView {
           }
         });
       }, 1000);
+      */
 
       return `
-        <div class = "store-top">
-          LCBO #${storeID} <span class="dark-blue">&nbsp;Store Overview</span>
+        <div class = "store-top" style="background-color: #43b97c">
+          Agency #${storeID} <span class="dark-blue" style="color: #045b06">&nbsp;Store Overview</span>
         </div>
         <div class="home-row">
           <div style="display: inline">
-            <div class="details-widget" style="background: linear-gradient(180deg, #003b5c 75px, #E5F8FF 75px); width: 22vw;">
+            <div class="details-widget" style="background: linear-gradient(180deg, #045b06 75px, white 75px); width: 22vw;">
               <h1>Store Details</h1>
               <br>
-              <h2 id="store-name"></h1>
-              <h2 id="store-address"></h1>
-              <h2 id="store-class"></h1>
+              <h2 id="store-name" style="color: #045b06"></h1>
+              <h2 id="store-address" style="color: #045b06"></h1>
+              <h2 id="store-class" style="color: #045b06"></h1>
             </div>
-            <div class="details-widget" style="width: 22vw; margin-top: 20px;">
+            <div class="details-widget" style="width: 22vw; margin-top: 20px; background: linear-gradient(180deg, #045b06 75px, white 75px)">
               <h1 style="margin-bottom: 40px; color: white;">Store Metrics</h1>
-              <h1 class="detail-head" style="padding-top: 10px;">RTD<span class="detail-right" id="mktshare-rtd"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-              <h1 class="detail-head">White Claw<span class="detail-right" id="mktshare-wc"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+              <h1 class="detail-head" style="padding-top: 10px; color: #045b06">RTD<span class="detail-right" style="color: #43b97c" id="mktshare-rtd"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+              <h1 class="detail-head" style="color: #045b06">White Claw<span class="detail-right" style="color: #43b97c" id="mktshare-wc"></span><br><span style="font-size: 15px;">Market Share</span></h1>
             </div>
           </div>
-          <div class="table-widget">
+          <div class="table-widget" style="background: linear-gradient(180deg, #045b06 75px, white 75px)">
             <div style="display: inline-block;">
               <h1 style="display: inline-block;">Store Opportunities</h1>
-              <button class="opportunity-button csv" id="download-csv-button">Export CSV</button>
-              <button id="delist-button" class="opportunity-button delisted">DELISTED</button>
-              <button id="list-button" class="opportunity-button listed">LISTED</button>
+              <button class="opportunity-button csv" id="download-csv-button" style="margin-right: 0px;">Export CSV</button>
+              <!-- <button id="delist-button" class="opportunity-button delisted">DELISTED</button>
+              <button id="list-button" class="opportunity-button listed">LISTED</button> -->
             </div>
             <div id="table-wrap"></div>
           </div>

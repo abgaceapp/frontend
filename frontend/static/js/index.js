@@ -1,6 +1,8 @@
 import Landing from "./views/home.js";
 import Territory from "./views/territory.js";
+import AgencyTerritory from "./views/territory-agency.js";
 import Store from "./views/store.js";
+import Agency from "./views/agency.js";
 import Login from "./views/login.js";
 import Account from "./views/account.js";
 import StoreList from "./views/storeList.js";
@@ -25,7 +27,9 @@ const router = async () => {
     const routes = [
         { path: "/", view: Landing },
         { path: "/territory/:tm", view: Territory },
+        { path: "/territory-agency/:tm", view: AgencyTerritory },
         { path: "/store/:id", view: Store },
+        { path: "/agency/:id", view: Agency },
         { path: "/login", view: Login },
         { path: "/account", view: Account },
         { path: "/stores/:tm", view: StoreList }
@@ -80,6 +84,7 @@ getAuth().onAuthStateChanged(function(user) {
 
     document.getElementById('main-rep-name').innerHTML = username;
     document.getElementById('menu-territory').href += username.toLowerCase();
+    document.getElementById('menu-territory-agency').href += username.toLowerCase();
     document.getElementById('menu-stores').href += username.toLowerCase();
     document.getElementById('main-rep').href = "/territory/" + username.toLowerCase();
 
