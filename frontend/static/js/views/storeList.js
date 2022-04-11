@@ -19,45 +19,49 @@ function getStoreList(db, tmName) {
           <h1>${tmName}'s<span class="light-blue">&nbsp;Stores</span></h1>
     `;
 
-    const bottomHTML = `</div>`;
-
-    var predictionsHTML = ``;
-
-
     var storeData = [];
-
-    var i = 0;
     for (var key in snapdata) {
-      if (key.startsWith("LCBO")) {
-        const storeCode = key.replace('LCBO', '');
-        predictionsHTML += `<a style="margin-bottom: 0px;" href="/store/${storeCode}">LCBO #${storeCode}</a>`
+      var storeCode = key;
 
-        storeData.push([`LCBO #${storeCode}`]);
+      if (storeCode.startsWith("L")) {
+        storeCode = storeCode.replace('LCBO', '');
+        storeData.push([`LCBO #${storeCode}`, 'LCBO']);
 
-        if (i+1 == snapdata.length) {
-          predictionsHTML += "</div>";
-        } else {
-          predictionsHTML += "<br>";
-        }
+      } else if (storeCode.startsWith("A")) {
+        storeCode = storeCode.replace('Agency', '');
+        storeData.push([`Agency #${storeCode}`, 'Agency']);
       }
-
-      i += 1;
     }
 
-    console.log(storeData);
 
     new Grid({
       columns: [
-        {
-          name: "LCBO Store ID",
-          formatter: (cell) => {
-              return html(`<a href="/store/${cell.slice(5).replace('#', '')}" target="_blank">${cell}</a>`);
+          {
+            name: "Store ID",
+            formatter: (cell) => {
+                if (cell.startsWith("L")) {
+                  return html(`<a href="/store/${cell.slice(5).replace('#', '')}" target="_blank">${cell}</a>`);
+                } else {
+                  return html(`<a href="/agency/${cell.slice(7).replace('#', '')}" target="_blank">${cell}</a>`);
+                }
           },
           sort: {
             compare: (a, b) => {
 
-              const intA = parseInt(a.replace('LCBO #', ''));
-              const intB = parseInt(b.replace('LCBO #', ''));
+              if (a.startsWith("L")) {
+                a = a.replace('LCBO #', '');
+              } else if (a.startsWith("A")) {
+                a = a.replace('Agency #', '');
+              }
+
+              if (b.startsWith("L")) {
+                b = b.replace('LCBO #', '');
+              } else if (b.startsWith("A")) {
+                b = b.replace('Agency #', '');
+              }
+
+              const intA = parseInt(a);
+              const intB = parseInt(b);
 
               if (intA > intB) {
                 return 1;
@@ -68,15 +72,18 @@ function getStoreList(db, tmName) {
               }
             }
           }
-        }
+        },
+        "Store Type"
       ],
       search: true,
       sort: true,
-      pagination: true,
+      pagination: {
+        enabled: true,
+        limit: 25
+      },
       data: storeData,
     }).render(document.getElementById("table-wrapper"));
 
-    //document.querySelector("#app").innerHTML = topHTML.concat(predictionsHTML, bottomHTML);
     fadeOutLoader();
   });
 }
