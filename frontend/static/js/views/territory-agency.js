@@ -313,7 +313,7 @@ export default class extends AbstractView {
 
     async getHtml() {
 
-      document.querySelector("body").style.backgroundImage = "url('../static/img/green_bg.png')";
+      document.querySelector("body").style.backgroundImage = "url('../static/img/dark_purple_bg.png')";
       document.getElementById("aceapp-header").style.visibility = "visible";
 
       const date = new Date();
@@ -391,20 +391,21 @@ export default class extends AbstractView {
       }, 1000);
 
       const baseString = `
-        <div class = "territory-top" style="background-color: #43b97c">
-          ${tmName}'s <span class="light-blue" style="color: #045b06">Territory Agency Overview</span>
+        <div class = "territory-top" style="background-color: #c380ff">
+          ${tmName}'s <span class="light-blue" style="color: #461b5e">Territory Agency Overview</span>
         </div>
         <div class="home-row">
-          <div class="details-widget" style="background: linear-gradient(180deg, #045b06 75px, white 75px);">
+          <div class="details-widget" style="background: linear-gradient(180deg, #461b5e 75px, white 75px);">
             <h1 style="margin-bottom: 40px; color: white;">Quick Look Metrics</h1>
-            <h1 class="detail-head" style="padding-top: 10px; color: #045b06">RTD<span class="detail-right" id="mktshare-rtd"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-            <h1 class="detail-head" style="color: #045b06">Seltzer<span class="detail-right" id="mktshare-seltz"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-            <h1 class="detail-head" style="color: #045b06">White Claw<span class="detail-right" id="mktshare-wc"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-            <h1 class="detail-head" style="color: #045b06; margin-bottom: 10px;">Tea<span class="detail-right" id="mktshare-tea"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+            <h1 class="detail-head" style="padding-top: 10px; color: #461b5e">RTD<span class="detail-right" id="mktshare-rtd" style="color: #c380ff"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+            <h1 class="detail-head" style="color: #461b5e">Seltzer<span class="detail-right" id="mktshare-seltz" style="color: #c380ff"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+            <h1 class="detail-head" style="color: #461b5e">White Claw<span class="detail-right" id="mktshare-wc" style="color:#c380ff"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+            <h1 class="detail-head" style="color: #461b5e; margin-bottom: 10px;">Tea<span class="detail-right" id="mktshare-tea" style="color: #c380ff"></span><br><span style="font-size: 15px;">Market Share</span></h1>
           </div>
-          <div class="table-widget" style="background: linear-gradient(180deg, #045b06 75px, white 75px);">
+          <div class="table-widget" style="background: linear-gradient(180deg, #461b5e 75px, white 75px);">
             <div style="display: inline-block;">
               <h1 style="display: inline-block;">Territory Opportunities</h1>
+              <button class="opportunity-button csv" id="lcbo-button" style="margin-right: 135px; background-color: #54c8f5" onclick="location.href='/territory/${this.params.tm}'">LCBO</button>
               <button class="opportunity-button csv" id="download-csv-button" style="margin-right: 0px;">Export CSV</button>
               <!-- <button id="delist-button" class="opportunity-button delisted">DELISTED</button>
               <button id="list-button" class="opportunity-button listed">LISTED</button> -->
