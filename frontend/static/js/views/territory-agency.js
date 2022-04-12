@@ -7,7 +7,7 @@ import { Grid, html } from "https://unpkg.com/gridjs?module";
 
 function getMetrics(db, name) {
   console.log(`TM_List/${name}`);
-  const metricRef = ref(db, `TM_List/${name}`);
+  const metricRef = ref(db, `Agency_TM_Metrics/${name}`);
 
   console.log("GETTING METRICS FOR")
   console.log(name);
@@ -16,7 +16,6 @@ function getMetrics(db, name) {
     const data = snapshot.val();
     document.querySelector("#mktshare-rtd").innerHTML = `${data["MktShare_RTD"]}%`;
     document.querySelector("#mktshare-seltz").innerHTML = `${data["MktShare_Seltz"]}%`;
-    document.querySelector("#mktshare-tea").innerHTML = `${data["MktShare_Tea"]}%`;
     document.querySelector("#mktshare-wc").innerHTML = `${data["MktShare_WC"]}%`;
 
     fadeOutLoader();
@@ -87,8 +86,7 @@ function waitAllPredictions(db, storeID) {
       data: allPredictions,
     }).render(document.getElementById("table-wrap"));
 
-    //getMetrics(db, tm_name);
-    fadeOutLoader();
+    getMetrics(db, tm_name);
   }
 }
 
@@ -400,7 +398,7 @@ export default class extends AbstractView {
             <h1 class="detail-head" style="padding-top: 10px; color: #461b5e">RTD<span class="detail-right" id="mktshare-rtd" style="color: #c380ff"></span><br><span style="font-size: 15px;">Market Share</span></h1>
             <h1 class="detail-head" style="color: #461b5e">Seltzer<span class="detail-right" id="mktshare-seltz" style="color: #c380ff"></span><br><span style="font-size: 15px;">Market Share</span></h1>
             <h1 class="detail-head" style="color: #461b5e">White Claw<span class="detail-right" id="mktshare-wc" style="color:#c380ff"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-            <h1 class="detail-head" style="color: #461b5e; margin-bottom: 10px;">Tea<span class="detail-right" id="mktshare-tea" style="color: #c380ff"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+            <h1 class="detail-head" style="color: #461b5e; margin-bottom: 10px;">Tea<span class="detail-right" id="mktshare-tea" style="color: #c380ff">N/A</span><br><span style="font-size: 15px;">Market Share</span></h1>
           </div>
           <div class="table-widget" style="background: linear-gradient(180deg, #461b5e 75px, white 75px);">
             <div style="display: inline-block;">

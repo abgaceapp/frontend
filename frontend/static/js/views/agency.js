@@ -9,22 +9,20 @@ import { Grid, html } from "https://unpkg.com/gridjs?module";
 
 function getMetrics(db, storenum) {
 
-  fadeOutLoader();
-
   const metricRef = ref(db, `Agency_Store_Metrics/${storenum}`);
+
+  setTimeout(fadeOutLoader(), 750);
 
   onValue(metricRef, (snapshot) => {
     const data = snapshot.val();
 
     if (data != null) {
       document.querySelector("#mktshare-rtd").innerHTML = `${data["MktShare_RTD"]}%`;
-      document.querySelector("#mktshare-wc").innerHTML = `${data["MktShare_WC"]}%`;
+      document.querySelector("#mktshare-seltz").innerHTML = `${data["MktShare_Seltz"]}%`;
     } else {
       document.querySelector("#mktshare-rtd").innerHTML = `N/A`;
-      document.querySelector("#mktshare-wc").innerHTML = `N/A`;
+      document.querySelector("#mktshare-seltz").innerHTML = `N/A`;
     }
-
-    //fadeOutLoader();
   });
 }
 
@@ -291,8 +289,8 @@ export default class extends AbstractView {
             </div>
             <div class="details-widget" style="width: 22vw; margin-top: 20px; background: linear-gradient(180deg, #461b5e 75px, white 75px)">
               <h1 style="margin-bottom: 40px; color: white;">Store Metrics</h1>
-              <h1 class="detail-head" style="padding-top: 10px; color: #461b5e">RTD<span class="detail-right" style="color: #c380ff" id="mktshare-rtd"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-              <h1 class="detail-head" style="color: #461b5e">White Claw<span class="detail-right" style="color: #c380ff" id="mktshare-wc"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+              <h1 class="detail-head" style="padding-top: 10px; color: #461b5e">RTD<span class="detail-right" style="color: #c380ff" id="mktshare-rtd"></span><br><span style="font-size: 15px;">ABG Market Share (All Agency)</span></h1>
+              <h1 class="detail-head" style="color: #461b5e">Seltzer<span class="detail-right" style="color: #c380ff" id="mktshare-seltz"></span><br><span style="font-size: 15px;">ABG Market Share (All Agency)</span></h1>
             </div>
           </div>
           <div class="table-widget" style="background: linear-gradient(180deg, #461b5e 75px, white 75px)">
