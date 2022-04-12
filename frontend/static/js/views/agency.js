@@ -203,7 +203,7 @@ export default class extends AbstractView {
     }
 
     async getHtml() {
-      document.querySelector("body").style.backgroundImage = "url('../static/img/green_bg.png')";
+      document.querySelector("body").style.backgroundImage = "url('../static/img/light_purple_bg.png')";
       document.getElementById("aceapp-header").style.visibility = "visible";
 
       const storeID = this.params.id;
@@ -277,25 +277,25 @@ export default class extends AbstractView {
       */
 
       return `
-        <div class = "store-top" style="background-color: #43b97c">
-          Agency #${storeID} <span class="dark-blue" style="color: #045b06">&nbsp;Store Overview</span>
+        <div class = "store-top" style="background-color: #c380ff">
+          Agency #${storeID} <span class="dark-blue" style="color: #461b5e">&nbsp;Store Overview</span>
         </div>
         <div class="home-row">
           <div style="display: inline">
-            <div class="details-widget" style="background: linear-gradient(180deg, #045b06 75px, white 75px); width: 22vw;">
+            <div class="details-widget" style="background: linear-gradient(180deg, #461b5e 75px, white 75px); width: 22vw;">
               <h1>Store Details</h1>
               <br>
-              <h2 id="store-name" style="color: #045b06"></h1>
-              <h2 id="store-address" style="color: #045b06"></h1>
-              <h2 id="store-class" style="color: #045b06"></h1>
+              <h2 id="store-name" style="color: #461b5e"></h1>
+              <h2 id="store-address" style="color: #461b5e"></h1>
+              <h2 id="store-class" style="color: #461b5e"></h1>
             </div>
-            <div class="details-widget" style="width: 22vw; margin-top: 20px; background: linear-gradient(180deg, #045b06 75px, white 75px)">
+            <div class="details-widget" style="width: 22vw; margin-top: 20px; background: linear-gradient(180deg, #461b5e 75px, white 75px)">
               <h1 style="margin-bottom: 40px; color: white;">Store Metrics</h1>
-              <h1 class="detail-head" style="padding-top: 10px; color: #045b06">RTD<span class="detail-right" style="color: #43b97c" id="mktshare-rtd"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-              <h1 class="detail-head" style="color: #045b06">White Claw<span class="detail-right" style="color: #43b97c" id="mktshare-wc"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+              <h1 class="detail-head" style="padding-top: 10px; color: #461b5e">RTD<span class="detail-right" style="color: #c380ff" id="mktshare-rtd"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+              <h1 class="detail-head" style="color: #461b5e">White Claw<span class="detail-right" style="color: #c380ff" id="mktshare-wc"></span><br><span style="font-size: 15px;">Market Share</span></h1>
             </div>
           </div>
-          <div class="table-widget" style="background: linear-gradient(180deg, #045b06 75px, white 75px)">
+          <div class="table-widget" style="background: linear-gradient(180deg, #461b5e 75px, white 75px)">
             <div style="display: inline-block;">
               <h1 style="display: inline-block;">Store Opportunities</h1>
               <button class="opportunity-button csv" id="download-csv-button" style="margin-right: 0px;">Export CSV</button>
