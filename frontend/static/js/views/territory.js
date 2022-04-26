@@ -14,10 +14,11 @@ function getMetrics(db, name) {
 
   onValue(metricRef, (snapshot) => {
     const data = snapshot.val();
-    document.querySelector("#mktshare-rtd").innerHTML = `${data["MktShare_RTD"]}%`;
     document.querySelector("#mktshare-seltz").innerHTML = `${data["MktShare_Seltz"]}%`;
     document.querySelector("#mktshare-tea").innerHTML = `${data["MktShare_Tea"]}%`;
-    document.querySelector("#mktshare-wc").innerHTML = `${data["MktShare_WC"]}%`;
+    document.querySelector("#mktshare-wc").innerHTML = `${data["PCT_WC"]}%`;
+    document.querySelector("#mktshare-wc-tea").innerHTML = `${data["PCT_WC_TEA"]}%`;
+    document.querySelector("#mktshare-twisted").innerHTML = `${data["PCT_TWISTED_TEA"]}%`;
 
     fadeOutLoader();
   });
@@ -310,10 +311,11 @@ export default class extends AbstractView {
         <div class="home-row">
           <div class="details-widget">
             <h1 style="margin-bottom: 40px; color: white;">Quick Look Metrics</h1>
-            <h1 class="detail-head" style="padding-top: 10px;">RTD<span class="detail-right" id="mktshare-rtd"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-            <h1 class="detail-head">Seltzer<span class="detail-right" id="mktshare-seltz"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-            <h1 class="detail-head">White Claw<span class="detail-right" id="mktshare-wc"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-            <h1 class="detail-head" style="margin-bottom: 10px;">Tea<span class="detail-right" id="mktshare-tea"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+            <h1 class="detail-head" style="padding-top: 10px;">Seltzer<span class="detail-right" id="mktshare-seltz"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+            <h1 class="detail-head">Tea<span class="detail-right" id="mktshare-tea"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+            <h1 class="detail-head">White Claw<span class="detail-right" id="mktshare-wc"></span><br><span style="font-size: 15px;">% of Sales</span></h1>
+            <h1 class="detail-head">White Claw Tea<span class="detail-right" id="mktshare-wc-tea"></span><br><span style="font-size: 15px;">% of Sales</span></h1>
+            <h1 class="detail-head" style="margin-bottom: 10px;">Twisted Tea<span class="detail-right" id="mktshare-twisted"></span><br><span style="font-size: 15px;">% of Sales</span></h1>
           </div>
           <div class="table-widget">
             <div style="display: inline-block;">
