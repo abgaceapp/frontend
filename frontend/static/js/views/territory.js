@@ -89,7 +89,7 @@ function getListStatus(db, storeID, sku, projected) {
           {
             name: "Store",
             formatter: (cell) => {
-                return html(`<a href="/store/${cell.slice(4)}" target="_blank">${cell}</a>`);
+                return html(`<a href="/store/lcbo/${cell.slice(4)}" target="_blank">${cell}</a>`);
             }
           }
         ],
@@ -236,7 +236,7 @@ export default class extends AbstractView {
 
     async getHtml() {
 
-      document.querySelector("body").style.backgroundImage = "url('../static/img/liteblue_bg.png')";
+      document.querySelector("body").style.backgroundImage = "url('../../static/img/liteblue_bg.png')";
       document.getElementById("aceapp-header").style.visibility = "visible";
 
       const date = new Date();
@@ -322,7 +322,7 @@ export default class extends AbstractView {
               <h1 style="display: inline-block;">Territory Opportunities</h1>
               <button id="delist-button" class="opportunity-button delisted" style="margin-right: 405px;">DELISTED</button>
               <button id="list-button" class="opportunity-button listed" style="margin-right: 270px;">LISTED</button>
-              <button class="opportunity-button csv" id="agency-button" style="margin-right: 135px; background-color:#c380ff" onclick="location.href='/territory-agency/${this.params.tm}'">Agency</button>
+              <button class="opportunity-button csv" id="agency-button" style="margin-right: 135px; background-color:#c380ff" onclick="location.href='/territory/agency/${this.params.tm}'">Agency</button>
               <button class="opportunity-button csv" id="download-csv-button" style="margin-right: 0px;">Export CSV</button>
             </div>
             <div id="table-wrap"></div>

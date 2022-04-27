@@ -208,7 +208,7 @@ export default class extends AbstractView {
     }
 
     async getHtml() {
-      document.querySelector("body").style.backgroundImage = "url('../static/img/white_bg.png')";
+      document.querySelector("body").style.backgroundImage = "url('../../static/img/white_bg.png')";
       document.getElementById("aceapp-header").style.visibility = "visible";
 
       const storeID = this.params.id;

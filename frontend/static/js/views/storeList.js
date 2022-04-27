@@ -40,9 +40,9 @@ function getStoreList(db, tmName) {
             name: "Store ID",
             formatter: (cell) => {
                 if (cell.startsWith("L")) {
-                  return html(`<a href="/store/${cell.slice(5).replace('#', '')}" target="_blank">${cell}</a>`);
+                  return html(`<a href="/store/lcbo/${cell.slice(5).replace('#', '')}" target="_blank">${cell}</a>`);
                 } else {
-                  return html(`<a href="/agency/${cell.slice(7).replace('#', '')}" target="_blank">${cell}</a>`);
+                  return html(`<a href="/store/agency/${cell.slice(7).replace('#', '')}" target="_blank">${cell}</a>`);
                 }
           },
           sort: {

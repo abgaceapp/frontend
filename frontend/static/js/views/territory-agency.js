@@ -71,7 +71,7 @@ function waitAllPredictions(db, storeID) {
         {
           name: "Store",
           formatter: (cell) => {
-              return html(`<a href="/agency/${cell.slice(6)}" target="_blank">#${cell.slice(6)}</a>`);
+              return html(`<a href="/store/agency/${cell.slice(6)}" target="_blank">#${cell.slice(6)}</a>`);
           }
         }
       ],
@@ -311,7 +311,7 @@ export default class extends AbstractView {
 
     async getHtml() {
 
-      document.querySelector("body").style.backgroundImage = "url('../static/img/dark_purple_bg.png')";
+      document.querySelector("body").style.backgroundImage = "url('../../static/img/dark_purple_bg.png')";
       document.getElementById("aceapp-header").style.visibility = "visible";
 
       const date = new Date();
@@ -403,7 +403,7 @@ export default class extends AbstractView {
           <div class="table-widget" style="background: linear-gradient(180deg, #461b5e 75px, white 75px);">
             <div style="display: inline-block;">
               <h1 style="display: inline-block;">Territory Opportunities</h1>
-              <button class="opportunity-button csv" id="lcbo-button" style="margin-right: 135px; background-color: #54c8f5" onclick="location.href='/territory/${this.params.tm}'">LCBO</button>
+              <button class="opportunity-button csv" id="lcbo-button" style="margin-right: 135px; background-color: #54c8f5" onclick="location.href='/territory/lcbo/${this.params.tm}'">LCBO</button>
               <button class="opportunity-button csv" id="download-csv-button" style="margin-right: 0px;">Export CSV</button>
               <!-- <button id="delist-button" class="opportunity-button delisted">DELISTED</button>
               <button id="list-button" class="opportunity-button listed">LISTED</button> -->

@@ -961,3 +961,17 @@ input:checked + .slider:before {
 .gridjs-table {
   width: 100%;
 }
+
+
+
+.home-row .table-widget .confirm-checkoff-warning {
+  color: black; font-size: 15px; font-family: 'Point'; margin-bottom: 30px; opacity: 0.5;
+}
+
+.home-row .table-widget .confirm-checkoff-h1 {
+  color: black; font-size: 25px; font-family: 'Point'; margin-bottom: -10px; color:#f5690a;
+}
+
+.home-row .table-widget .confirm-checkoff-h2 {
+  color: black; font-size: 20px; font-family: 'Clear Sans'; font-weight: normal; margin-bottom: 30px;
+}
