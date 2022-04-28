@@ -254,11 +254,11 @@ export function roundToTwo(num) {
     //return number.toFixed(2);
 }
 
-export function numberWithCommas(x) {
+export function numberWithCommas(input) {
     //return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 
-    nStr += '';
-    var x = nStr.split('.');
+    input += '';
+    var x = input.split('.');
     var x1 = x[0];
     var x2 = x.length > 1 ? '.' + x[1] : '';
     var rgx = /(\d+)(\d{3})/;
