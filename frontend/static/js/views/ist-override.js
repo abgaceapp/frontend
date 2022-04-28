@@ -17,7 +17,7 @@ var tm_name = "";
 export default class extends AbstractView {
     constructor(params) {
         super(params);
-        this.setTitle('Confirm Checkoff');
+        this.setTitle('Confirm Receiving Inventory?');
     }
 
     async getHtml() {
@@ -62,7 +62,7 @@ export default class extends AbstractView {
         <div class="home-row">
           <div class="table-widget" style="background: linear-gradient(180deg, #780901 75px, white 75px); width: 100%">
             <div style="text-align: center;">
-              <h1>Confirm Checkoff?</h1>
+              <h1>Confirm Receiving Inventory?</h1>
               <h1 class="confirm-checkoff-warning">WARNING: THIS ACTION CANNOT BE UNDONE.</h1>
               <h1 class="confirm-checkoff-h1">Store</h1>
               <h1 class="confirm-checkoff-h2">${this.params.store}</h1>

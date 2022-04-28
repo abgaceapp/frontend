@@ -20,10 +20,16 @@ function getStockoutPredict(db, ref_str, sku, storeID, week, tmName) {
 
     if (snapdata != null) {
       checked_skus += 1;
+
       tableData.push([sku, "$"+roundToTwo(snapdata["Revenue"]), storeID, "Check Off"]);
 
     } else {
       checked_skus_needed -= 1;
+
+      if (sku == "Cottage Springs Mixed 24 Pack") {
+        console.log("TWO FOUR EMPTY");
+        console.log(ref_str);
+      }
     }
 
     if (checked_skus == checked_skus_needed) {
@@ -63,11 +69,11 @@ function getStockoutPredict(db, ref_str, sku, storeID, week, tmName) {
             }
           },
           {
-            name: "Action",
+            name: "Receiving Inventory?",
             formatter: (_, row) => html(
               `<a
               style="text-decoration: underline; color: #780901; font-weight: bold; cursor: pointer;"
-              href='/inventory/${tmName.replace(/^\w/, (c) => c.toLowerCase()).replaceAll('/', '')}/checkoff/${row.cells[2].data}/${row.cells[0].data.replaceAll(' ', '_')}'>Check Off</a>`
+              href='/inventory/${tmName.replace(/^\w/, (c) => c.toLowerCase()).replaceAll('/', '')}/checkoff/${row.cells[2].data}/${row.cells[0].data.replaceAll(' ', '_')}'>Yes</a>`
             )
           }
         ],
@@ -102,8 +108,17 @@ function getStockedout(db, storeID, tmName) {
 
     for (var key in snapdata) {
       //console.log("HERE KEY " + key + " -> " + storeID);
-      checked_skus_needed += 1;
-      getStockoutPredict(db, `Predicted_Data/FY${curPeriod[2]}P${curPeriod[0]}W${curPeriod[1]}/${storeID}/${key}`, key, storeID, `P${curPeriod[0]}W${curPeriod[1]}`, tmName);
+
+      if (snapdata[key] == 0) {
+        // Skip non-stocked out skus
+
+        if (key == "Cottage Springs Mixed 24 Pack") {
+          console.log("TWO FOUR");
+        }
+
+        getStockoutPredict(db, `Predicted_Data/FY${curPeriod[2]}P${curPeriod[0]}W${curPeriod[1]}/${storeID}/${key}`, key, storeID, `P${curPeriod[0]}W${curPeriod[1]}`, tmName);
+        checked_skus_needed += 1;
+      }
     }
   });
 }
@@ -175,7 +190,7 @@ export default class extends AbstractView {
 
       const baseString = `
         <div class = "territory-top" style="background-color: #780901">
-          ${tmName}'s <span class="light-blue" style="color: #f5690a">Inventory Overview</span>
+          ${tmName}'s <span class="light-blue" style="color: #f5690a">IST Opportunities</span>
         </div>
         <div class="home-row">
           <div style="display: inline;">
@@ -190,7 +205,7 @@ export default class extends AbstractView {
           </div>
           <div class="table-widget" style="background: linear-gradient(180deg, #780901 75px, white 75px); width: 100%">
             <div style="display: inline-block;">
-              <h1 style="display: inline-block;">Stockout Opportunities</h1>
+              <h1 style="display: inline-block;">Stockouts</h1>
               <!-- <button class="opportunity-button csv" id="lcbo-button" style="margin-right: 135px; background-color: #54c8f5" onclick="location.href='/territory/lcbo/${this.params.tm}'">LCBO</button> -->
               <button class="opportunity-button csv" id="download-csv-button" style="margin-right: 0px; background-color: #f5690a">Export CSV</button>
               <!-- <button id="delist-button" class="opportunity-button delisted">DELISTED</button>

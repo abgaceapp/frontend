@@ -115,7 +115,7 @@ export default class extends AbstractView {
               <br>
               <button class="links-button agency" onclick="window.open('/territory/agency/${this.params.tm}', '_self');">AGENCY</button>
               <br>
-              <button class="links-button inventory" onclick="window.open('/inventory/${this.params.tm}', '_self');">INVENTORY</button>
+              <button class="links-button inventory" onclick="window.open('/inventory/${this.params.tm}', '_self');">IST OPPORTUNITIES</button>
             </div>
           </div>
           <div class="table-widget" style="width: 100%;">
