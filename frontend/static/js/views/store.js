@@ -16,7 +16,8 @@ function getMetrics(db, storenum) {
 
     if (data != null) {
       document.querySelector("#mktshare-seltz").innerHTML = `${data["MktShare_Seltz"]}%`;
-      document.querySelector("#mktshare-tea").innerHTML = `${data["MktShare_WC"]}%`;
+      document.querySelector("#mktshare-tea").innerHTML = `${data["MktShare_Tea"]}%`;
+      document.querySelector("#mktshare-rtd").innerHTML = `${data["MktShare_RTD"]}%`;
       document.querySelector("#mktshare-wc").innerHTML = `${data["PCT_WC"]}%`;
       document.querySelector("#mktshare-wc-tea").innerHTML = `${data["PCT_WC_TEA"]}%`;
       document.querySelector("#mktshare-twisted").innerHTML = `${data["PCT_TWISTED_TEA"]}%`;
@@ -336,6 +337,7 @@ export default class extends AbstractView {
               <h1 class="detail-head">🟊 White Claw<span class="detail-right priority" id="mktshare-wc"></span><br><span style="font-size: 15px;">% of Sales</span></h1>
               <h1 class="detail-head">🟊 WC Tea<span class="detail-right priority" id="mktshare-wc-tea"></span><br><span style="font-size: 15px;">% of Sales</span></h1>
               <h1 class="detail-head">Twisted Tea<span class="detail-right" id="mktshare-twisted"></span><br><span style="font-size: 15px;">% of Sales</span></h1>
+              <h1 class="detail-head">RTD<span class="detail-right" id="mktshare-rtd"></span><br><span style="font-size: 15px;">Market Share</span></h1>
               <h1 class="detail-head">Seltzer<span class="detail-right" id="mktshare-seltz"></span><br><span style="font-size: 15px;">Market Share</span></h1>
               <h1 class="detail-head">Tea<span class="detail-right" id="mktshare-tea"></span><br><span style="font-size: 15px;">Market Share</span></h1>
             </div>
