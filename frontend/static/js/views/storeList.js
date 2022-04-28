@@ -85,6 +85,10 @@ function getStoreList(db, tmName) {
     }).render(document.getElementById("table-wrapper"));
 
     fadeOutLoader();
+
+    const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
+    searchbar.placeholder = 'Search by LCBO # or Agency #...';
+    searchbar.style.width = '350px';
   });
 }
 

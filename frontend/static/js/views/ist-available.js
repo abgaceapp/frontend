@@ -89,10 +89,6 @@ function getStockoutPredict(db, ref_str, sku, storeID, week, tmName) {
       }).render(document.getElementById("table-wrap"));
 
       fadeOutLoader();
-
-      const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
-      searchbar.placeholder = 'Search by LCBO # or SKU (i.e. Product Name)...';
-      searchbar.style.width = '375px';
     }
   });
 }

@@ -21,6 +21,10 @@ function getMetrics(db, name) {
     document.querySelector("#mktshare-twisted").innerHTML = `${data["PCT_TWISTED_TEA"]}%`;
 
     fadeOutLoader();
+
+    const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
+    searchbar.placeholder = 'Search by LCBO # or SKU (i.e. Product Name)...';
+    searchbar.style.width = '375px';
   });
 }
 
@@ -320,11 +324,11 @@ export default class extends AbstractView {
             </div>
             <div class="details-widget" style="width: 22vw; margin-top: 20px;">
               <h1 style="margin-bottom: 40px; color: white;">Quick Look Metrics</h1>
-              <h1 class="detail-head" style="padding-top: 10px;">Seltzer<span class="detail-right" id="mktshare-seltz"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-              <h1 class="detail-head">Tea<span class="detail-right" id="mktshare-tea"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-              <h1 class="detail-head">White Claw<span class="detail-right" id="mktshare-wc"></span><br><span style="font-size: 15px;">% of Sales</span></h1>
-              <h1 class="detail-head">WC Tea<span class="detail-right" id="mktshare-wc-tea"></span><br><span style="font-size: 15px;">% of Sales</span></h1>
-              <h1 class="detail-head" style="margin-bottom: 10px;">Twisted Tea<span class="detail-right" id="mktshare-twisted"></span><br><span style="font-size: 15px;">% of Sales</span></h1>
+              <h1 class="detail-head" style="padding-top: 10px;">🟊 White Claw<span class="detail-right priority" id="mktshare-wc"></span><br><span style="font-size: 15px;">% of Sales</span></h1>
+              <h1 class="detail-head">🟊 WC Tea<span class="detail-right priority" id="mktshare-wc-tea"></span><br><span style="font-size: 15px;">% of Sales</span></h1>
+              <h1 class="detail-head">Twisted Tea<span class="detail-right" id="mktshare-twisted"></span><br><span style="font-size: 15px;">% of Sales</span></h1>
+              <h1 class="detail-head">Seltzer<span class="detail-right" id="mktshare-seltz"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+              <h1 class="detail-head" style="margin-bottom: 5px;">Tea<span class="detail-right" id="mktshare-tea"></span><br><span style="font-size: 15px;">Market Share</span></h1>
             </div>
           </div>
           <div class="table-widget">

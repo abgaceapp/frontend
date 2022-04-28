@@ -24,6 +24,10 @@ function getMetrics(db, storenum) {
       document.querySelector("#mktshare-seltz").innerHTML = `N/A`;
     }
   });
+
+  const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
+  searchbar.placeholder = 'Search by Store # or SKU (i.e. Product Name)...';
+  searchbar.style.width = '375px';
 }
 
 
@@ -56,7 +60,7 @@ function waitAllPredictions(db, storeID) {
             }
           }
         ],
-        //search: true,
+        search: true,
         pagination: {
           enabled: true,
           limit: 25

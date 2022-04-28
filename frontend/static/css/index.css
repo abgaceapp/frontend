@@ -616,6 +616,10 @@ span.light-blue {
   color: #5CC9F3;
 }
 
+.detail-right.priority {
+  font-family: 'Point Extra'; text-decoration: underline 5px #5CC9F350;
+}
+
 .home-row h1 {
   font-size: 25px;
   color: #003b5c;

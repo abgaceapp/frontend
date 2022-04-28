@@ -19,6 +19,10 @@ function getMetrics(db, name) {
     document.querySelector("#mktshare-wc").innerHTML = `${data["MktShare_WC"]}%`;
 
     fadeOutLoader();
+
+    const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
+    searchbar.placeholder = 'Search by Store # or SKU (i.e. Product Name)...';
+    searchbar.style.width = '375px';
   });
 }
 
