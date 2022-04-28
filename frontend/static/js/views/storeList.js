@@ -108,6 +108,16 @@ export default class extends AbstractView {
 
       return `
         <div class="home-row">
+        <div style="display: inline;">
+            <div class="details-widget" style="width: 15vw;">
+              <h1 style="margin-bottom: 30px; color: white;">Quick Links</h1>
+              <button class="links-button" onclick="window.open('/territory/lcbo/${this.params.tm}', '_self');">LCBO</button>
+              <br>
+              <button class="links-button agency" onclick="window.open('/territory/agency/${this.params.tm}', '_self');">AGENCY</button>
+              <br>
+              <button class="links-button inventory" onclick="window.open('/inventory/${this.params.tm}', '_self');">INVENTORY</button>
+            </div>
+          </div>
           <div class="table-widget" style="width: 100%;">
             <h1>${tmName}'s<span class="light-blue">&nbsp;Stores</span></h1>
             <div id="table-wrapper"></div>

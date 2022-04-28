@@ -178,6 +178,16 @@ export default class extends AbstractView {
           ${tmName}'s <span class="light-blue" style="color: #f5690a">Inventory Overview</span>
         </div>
         <div class="home-row">
+          <div style="display: inline;">
+            <div class="details-widget" style="width: 15vw; background: linear-gradient(180deg, #780901 75px, white 75px);">
+              <h1 style="margin-bottom: 30px; color: white;">Quick Links</h1>
+              <button class="links-button" onclick="window.open('/territory/lcbo/${this.params.tm}', '_self');">LCBO</button>
+              <br>
+              <button class="links-button agency" onclick="window.open('/territory/agency/${this.params.tm}', '_self');">AGENCY</button>
+              <br>
+              <button class="links-button stores" onclick="window.open('/stores/${this.params.tm}', '_self');">ALL STORES</button>
+            </div>
+          </div>
           <div class="table-widget" style="background: linear-gradient(180deg, #780901 75px, white 75px); width: 100%">
             <div style="display: inline-block;">
               <h1 style="display: inline-block;">Stockout Opportunities</h1>

@@ -857,6 +857,35 @@ span.light-blue {
 }
 
 
+.links-button {
+  height: 45px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+
+  margin-top: 12px;
+
+  font-family: 'Point Bold';
+
+  cursor: pointer;
+
+  background-color: #54c8f5;
+  color: white;
+}
+
+.links-button.agency {
+  background-color: #c380ff;
+}
+
+.links-button.inventory {
+  background-color: #f56909;
+}
+
+.links-button.stores {
+  background-color: #003a5c;
+}
+
+
 .opportunity-button {
   height: 40px;
   width: 120px;

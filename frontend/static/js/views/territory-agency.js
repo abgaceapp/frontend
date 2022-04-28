@@ -393,17 +393,27 @@ export default class extends AbstractView {
           ${tmName}'s <span class="light-blue" style="color: #461b5e">Territory Agency Overview</span>
         </div>
         <div class="home-row">
-          <div class="details-widget" style="background: linear-gradient(180deg, #461b5e 75px, white 75px);">
-            <h1 style="margin-bottom: 40px; color: white;">Quick Look Metrics</h1>
-            <h1 class="detail-head" style="padding-top: 10px; color: #461b5e">RTD<span class="detail-right" id="mktshare-rtd" style="color: #c380ff"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-            <h1 class="detail-head" style="color: #461b5e">Seltzer<span class="detail-right" id="mktshare-seltz" style="color: #c380ff"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-            <h1 class="detail-head" style="color: #461b5e">White Claw<span class="detail-right" id="mktshare-wc" style="color:#c380ff"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-            <h1 class="detail-head" style="color: #461b5e; margin-bottom: 10px;">Tea<span class="detail-right" id="mktshare-tea" style="color: #c380ff">N/A</span><br><span style="font-size: 15px;">Market Share</span></h1>
+          <div style="display: inline;">
+            <div class="details-widget" style="width: 22vw; background: linear-gradient(180deg, #461b5e 75px, white 75px);">
+              <h1 style="margin-bottom: 30px; color: white;">Quick Links</h1>
+              <button class="links-button" onclick="window.open('/territory/lcbo/${this.params.tm}', '_self');">LCBO</button>
+              <br>
+              <button class="links-button inventory" onclick="window.open('/inventory/${this.params.tm}', '_self');">INVENTORY</button>
+              <br>
+              <button class="links-button stores" onclick="window.open('/stores/${this.params.tm}', '_self');">ALL STORES</button>
+            </div>
+            <br>
+            <div class="details-widget" style="background: linear-gradient(180deg, #461b5e 75px, white 75px); width: 22vw;">
+              <h1 style="margin-bottom: 40px; color: white;">Quick Look Metrics</h1>
+              <h1 class="detail-head" style="padding-top: 10px; color: #461b5e">RTD<span class="detail-right" id="mktshare-rtd" style="color: #c380ff"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+              <h1 class="detail-head" style="color: #461b5e">Seltzer<span class="detail-right" id="mktshare-seltz" style="color: #c380ff"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+              <h1 class="detail-head" style="color: #461b5e">White Claw<span class="detail-right" id="mktshare-wc" style="color:#c380ff"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+              <h1 class="detail-head" style="color: #461b5e; margin-bottom: 10px;">Tea<span class="detail-right" id="mktshare-tea" style="color: #c380ff">N/A</span><br><span style="font-size: 15px;">Market Share</span></h1>
+            </div>
           </div>
           <div class="table-widget" style="background: linear-gradient(180deg, #461b5e 75px, white 75px);">
             <div style="display: inline-block;">
               <h1 style="display: inline-block;">Territory Opportunities</h1>
-              <button class="opportunity-button csv" id="lcbo-button" style="margin-right: 135px; background-color: #54c8f5" onclick="location.href='/territory/lcbo/${this.params.tm}'">LCBO</button>
               <button class="opportunity-button csv" id="download-csv-button" style="margin-right: 0px;">Export CSV</button>
               <!-- <button id="delist-button" class="opportunity-button delisted">DELISTED</button>
               <button id="list-button" class="opportunity-button listed">LISTED</button> -->

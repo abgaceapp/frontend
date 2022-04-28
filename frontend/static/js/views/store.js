@@ -22,9 +22,30 @@ function getMetrics(db, storenum) {
       document.querySelector("#mktshare-wc").innerHTML = `N/A`;
     }
 
+    getStoreInventory(db, storenum);
+  });
+}
+
+
+function getStoreInventory(db, storenum) {
+  const inventRef = ref(db, `Store_Inventory/${storenum}`);
+
+  onValue(inventRef, (snapshot) => {
+
+    const data = snapshot.val();
+
+    if (data != null) {
+        for (var key in data) {
+          inventoryData.push([key, data[key]]);
+        }
+    } else {
+      console.log("No inventory data");
+    }
+
     fadeOutLoader();
   });
 }
+
 
 function getListStatus(db, storeID, sku, projected) {
   const listRef = ref(db, `Store_Data/${storeID}`);
@@ -75,7 +96,7 @@ function getListStatus(db, storeID, sku, projected) {
             }
           }
         ],
-        //search: true,
+        search: true,
         pagination: {
           enabled: true,
           limit: 25
@@ -111,6 +132,7 @@ function getStoreInfo(db, storeID) {
 
 var listedData = [];
 var delistedData = [];
+var inventoryData = [];
 
 var checked_skus = 0;
 var checked_skus_needed = 0;
@@ -216,22 +238,26 @@ export default class extends AbstractView {
       getStoreForecasts(this.db, `LCBO${storeID}`);
 
 
-      var showing_listed = false;
-
       setTimeout(function() {
         const downloadcsvbtn = document.getElementById('download-csv-button');
 
         downloadcsvbtn.addEventListener('click', () => {
           var tabledata = [];
           var filename = `LCBO${storeID}`;
-          if (showing_listed) {
+          if (showing_option == 1) {
             tabledata = listedData;
-            tabledata.unshift(['SKU', 'FY Forecast (FY23)'])
-            filename += '_listed.csv'
-          } else {
+            tabledata.unshift(['SKU', 'FY Forecast (FY23)']);
+            filename += '_listed.csv';
+
+          } else if (showing_option == 0) {
             tabledata = delistedData;
-            tabledata.unshift(['SKU', 'FY Forecast (FY23)'])
-            filename += '_delisted.csv'
+            tabledata.unshift(['SKU', 'FY Forecast (FY23)']);
+            filename += '_delisted.csv';
+
+          } else {
+            tabledata = inventoryData;
+            tabledata.unshift(['SKU', 'Inventory']);
+            filename += '_inventory.csv';
           }
 
           let csvContent = "data:text/csv;charset=utf-8,"
@@ -245,29 +271,42 @@ export default class extends AbstractView {
           link.click(); // This will download the data file named "my_data.csv".
         });
 
+        var showing_option = 0;
         const delistbtn = document.getElementById('delist-button');
         const listbtn = document.getElementById('list-button');
+        const inventbtn = document.getElementById('inventory-button');
 
         delistbtn.addEventListener('click', () => {
-          if (showing_listed) {
-            // Show delist button
-            delistbtn.style.opacity = 1;
-            listbtn.style.opacity = 0.5;
-            showing_listed = false;
+          // Show delist button
+          showing_option = 0;
 
-            table_grid.updateConfig({data: delistedData}).forceRender();
-          }
+          delistbtn.style.opacity = 1;
+          listbtn.style.opacity = 0.5;
+          inventbtn.style.opacity = 0.5;
+
+          table_grid.updateConfig({columns: ['SKU', 'FY Forecast (FY23)'], data: delistedData}).forceRender();
         });
 
         listbtn.addEventListener('click', () => {
-          if (!showing_listed) {
-            // Show listing button
-            listbtn.style.opacity = 1;
-            delistbtn.style.opacity = 0.5;
-            showing_listed = true;
+          // Show listing button
+          showing_option = 1;
 
-            table_grid.updateConfig({data: listedData}).forceRender();
-          }
+          listbtn.style.opacity = 1;
+          delistbtn.style.opacity = 0.5;
+          inventbtn.style.opacity = 0.5;
+
+          table_grid.updateConfig({columns: ['SKU', 'FY Forecast (FY23)'], data: listedData}).forceRender();
+        });
+
+        inventbtn.addEventListener('click', () => {
+          // Show other buttons
+          showing_option = 2;
+
+          inventbtn.style.opacity = 1;
+          delistbtn.style.opacity = 0.5;
+          listbtn.style.opacity = 0.5;
+
+          table_grid.updateConfig({columns: ['SKU', 'Inventory'], data: inventoryData}).forceRender();
         });
       }, 1000);
 
@@ -293,9 +332,16 @@ export default class extends AbstractView {
           <div class="table-widget">
             <div style="display: inline-block;">
               <h1 style="display: inline-block;">Store Opportunities</h1>
+              <!--
               <button class="opportunity-button csv" id="download-csv-button">Export CSV</button>
               <button id="delist-button" class="opportunity-button delisted">DELISTED</button>
               <button id="list-button" class="opportunity-button listed">LISTED</button>
+              <button id="inventory-button" class="opportunity-button inventory">Inventory</button>
+              -->
+              <button id="delist-button" class="opportunity-button delisted" style="margin-right: 405px;">DELISTED</button>
+              <button id="list-button" class="opportunity-button listed" style="margin-right: 270px;">LISTED</button>
+              <button class="opportunity-button csv" id="inventory-button" style="opacity: 0.5; margin-right: 135px; background-color:#f56909">INVENTORY</button>
+              <button class="opportunity-button csv" id="download-csv-button" style="margin-right: 0px;">Export CSV</button>
             </div>
             <div id="table-wrap"></div>
           </div>
