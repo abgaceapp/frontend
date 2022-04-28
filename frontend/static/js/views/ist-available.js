@@ -41,7 +41,7 @@ function getInStock(db, store, sku, tm) {
             formatter: (_, row) => html(
               `<a
               style="text-decoration: underline; color: #780901; font-weight: bold; cursor: pointer;"
-              href='/inventory/${tm.replace(/^\w/, (c) => c.toLowerCase()).replaceAll('/', '')}/checkoff/${row.cells[2].data}/${row.cells[0].data.replaceAll(' ', '_')}'>Confirm IST</a>`
+              href='/inventory/${tm.replace(/^\w/, (c) => c.toLowerCase()).replaceAll('/', '')}/checkoff/${row.cells[0].data}/${sku.replaceAll(' ', '_')}'>Confirm IST</a>`
             )
           }
         ],
@@ -157,7 +157,7 @@ export default class extends AbstractView {
           </div>
           <div class="table-widget" style="background: linear-gradient(180deg, #780901 75px, white 75px); width: 100%">
             <div style="display: inline-block;">
-              <h1 style="display: inline-block;">Stockouts</h1>
+              <h1 style="display: inline-block;">'In Stock' Stores</h1>
               <!-- <button class="opportunity-button csv" id="lcbo-button" style="margin-right: 135px; background-color: #54c8f5" onclick="location.href='/territory/lcbo/${this.params.tm}'">LCBO</button> -->
               <button class="opportunity-button csv" id="download-csv-button" style="margin-right: 0px; background-color: #f5690a">Export CSV</button>
               <!-- <button id="delist-button" class="opportunity-button delisted">DELISTED</button>
