@@ -5,80 +5,48 @@ import { getPeriod, roundToTwo, numberWithCommas } from "./periodFuncs.js"
 import { Grid, html } from "https://unpkg.com/gridjs?module";
 
 
-var checked_skus = 0;
-var checked_skus_needed = 0;
-
 var tableData = [];
 var table_grid = new Grid();
 
 
-function getStockoutPredict(db, ref_str, sku, storeID, week, tmName) {
-  const storeRef = ref(db, ref_str);
+var invent_checked = 0;
+var invent_checked_needed = 0;
 
-  const stockedoutForecast = onValue(storeRef, (snapshot) => {
-    const snapdata = snapshot.val();
+function getInStock(db, store, sku, tm) {
+  const inventory_ref = ref(db, `Store_Inventory/${store}/${sku}`);
 
-    if (snapdata != null) {
-      checked_skus += 1;
+  onValue(inventory_ref, (snapshot) => {
+    const stock = snapshot.val();
 
-      tableData.push([sku, "$"+roundToTwo(snapdata["Revenue"]), storeID, "Check Off"]);
+    if (stock != null && stock != 0) {
+      tableData.push([store, stock, 'x'])
+      invent_checked += 1;
 
     } else {
-      checked_skus_needed -= 1;
-
-      if (sku == "Cottage Springs Mixed 24 Pack") {
-        console.log("TWO FOUR EMPTY");
-        console.log(ref_str);
-      }
+      invent_checked_needed -= 1;
     }
 
-    if (checked_skus == checked_skus_needed) {
+    if (invent_checked == invent_checked_needed) {
       table_grid = new Grid({
         columns: [
-          {
-            name: "SKU",
-            formatter: (cell) => {
-                return `${cell.replace('-', '').replace('Cottages', 'Cottage')}`;
-            }
-          },
-          {
-            name: `Weekly Forecast (${week})`,
-            sort: {
-              compare: (a, b) => {
-
-                const floatA = parseFloat(a.replace('$', ''));
-                const floatB = parseFloat(b.replace('$', ''));
-
-                if (floatA > floatB) {
-                  return 1;
-                } else if (floatA < floatB) {
-                  return -1;
-                } else {
-                  return 0;
-                }
-              }
-            },
-            formatter: (cell) => {
-                return numberWithCommas(cell);
-            }
-          },
           {
             name: "Store",
             formatter: (cell) => {
                 return html(`<a href="/store/lcbo/${cell.slice(4)}" target="_blank">${cell}</a>`);
             }
           },
+          'Stock',
           {
-            name: "Receiving Inventory?",
+            name: "Action",
             formatter: (_, row) => html(
               `<a
               style="text-decoration: underline; color: #780901; font-weight: bold; cursor: pointer;"
-              href='/inventory/${tmName.replace(/^\w/, (c) => c.toLowerCase()).replaceAll('/', '')}/checkoff/${row.cells[2].data}/${row.cells[0].data.replaceAll(' ', '_')}'>Yes</a>`
+              href='/inventory/${tm.replace(/^\w/, (c) => c.toLowerCase()).replaceAll('/', '')}/checkoff/${row.cells[2].data}/${row.cells[0].data.replaceAll(' ', '_')}'>Confirm IST</a>`
             )
           }
         ],
         search: {
-          selector: (cell, rowIndex, cellIndex) => (cellIndex == 2 || cellIndex == 0) ? cell : 0
+          selector: (cell, rowIndex, cellIndex) => (cellIndex == 0) ? cell : 0
         },
         pagination: {
           enabled: true,
@@ -88,70 +56,44 @@ function getStockoutPredict(db, ref_str, sku, storeID, week, tmName) {
         data: tableData,
       }).render(document.getElementById("table-wrap"));
 
+      const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
+      searchbar.placeholder = 'Search by LCBO #...';
+
+      document.getElementsByClassName('gridjs-th-sort')[1].click();
+      document.getElementsByClassName('gridjs-th-sort')[1].click();
+
       fadeOutLoader();
     }
   });
 }
 
 
+function getISTOptions(db, tm, sku, store) {
+  const tm_storelist_ref = ref(db, `TM_List/${tm}`);
 
-function getStockedout(db, storeID, tmName) {
-  const date = new Date();
-  const curPeriod = getPeriod(date.getMonth(), date.getDate(), date.getFullYear());
-  const stockoutRef = ref(db, `Store_Inventory/${storeID}`);
+  onValue(tm_storelist_ref, (snapshot) => {
+    const storelistSnap = snapshot.val();
 
-  //const storeRef_fy = ref(db, `Predicted_Data/FY${curPeriod[2]}/${storeID}`);
-  //const storeRef_fy = ref(db, `Predicted_Data_FY/FY23/${storeID}`);
+    for (var storeKey in storelistSnap) {
+      if (storeKey.substring(0, 4) == "LCBO") {
+        getInStock(db, storeKey, sku, tm);
 
-  const stockedoutItems = onValue(stockoutRef, (snapshot) => {
-    const snapdata = snapshot.val();
-
-    for (var key in snapdata) {
-      //console.log("HERE KEY " + key + " -> " + storeID);
-
-      if (snapdata[key] == 0) {
-        // Skip non-stocked out skus
-
-        if (key == "Cottage Springs Mixed 24 Pack") {
-          console.log("TWO FOUR");
-        }
-
-        getStockoutPredict(db, `Predicted_Data/FY${curPeriod[2]}P${curPeriod[0]}W${curPeriod[1]}/${storeID}/${key}`, key, storeID, `P${curPeriod[0]}W${curPeriod[1]}`, tmName);
-        checked_skus_needed += 1;
+        invent_checked_needed += 1;
       }
     }
   });
 }
 
 
-function getStockedoutForecasts(db, tmName) {
-  tableData = [];
-
-  const storelistRef = ref(db, `TM_List/${tmName}`);
-
-  onValue(storelistRef, async (snapshot) => {
-    const storelistSnap = snapshot.val();
-
-    for (var storeKey in storelistSnap) {
-      if (storeKey.substring(0,4) == "LCBO") {
-        var tableData = [];
-
-        getStockedout(db, storeKey, tmName);
-      }
-    }
-  })
-}
-
-
 export default class extends AbstractView {
     constructor(params) {
         super(params);
-        this.setTitle(`${this.params.tm.replace(/^\w/, (c) => c.toUpperCase())}'s Inventory`);
+        this.setTitle(`IST to ${this.params.store}`);
     }
 
     async getHtml() {
 
-      document.querySelector("body").style.backgroundImage = "url('../../static/img/dark_orange_bg.png')";
+      document.querySelector("body").style.backgroundImage = "url('../../../../static/img/light_orange_bg.png')";
       document.getElementById("aceapp-header").style.visibility = "visible";
 
       const date = new Date();
@@ -161,7 +103,15 @@ export default class extends AbstractView {
       var tmName = `${this.params.tm}`;
       tmName = tmName.replace(/^\w/, (c) => c.toUpperCase());
 
-      getStockedoutForecasts(this.db, tmName);
+      var skuName = `${this.params.sku}`;
+      skuName = skuName.replaceAll('_', ' ');
+
+      const store = `${this.params.store}`;
+
+
+      getISTOptions(this.db, tmName, skuName, store);
+
+      //getStockedoutForecasts(this.db, tmName);
 
       setTimeout(function() {
         const downloadcsvbtn = document.getElementById('download-csv-button');
@@ -190,12 +140,14 @@ export default class extends AbstractView {
 
       const baseString = `
         <div class = "territory-top" style="background-color: #780901">
-          ${tmName}'s <span class="light-blue" style="color: #f5690a">IST Opportunities</span>
+          ${skuName.replaceAll('-', '')}&nbsp;&nbsp;&nbsp;<span class="light-blue" style="color: #f5690a">IST Options</span>
         </div>
         <div class="home-row">
           <div style="display: inline;">
             <div class="details-widget" style="width: 15vw; background: linear-gradient(180deg, #780901 75px, white 75px);">
               <h1 style="margin-bottom: 30px; color: white;">Quick Links</h1>
+              <button class="links-button inventory" onclick="window.open('/inventory/${this.params.tm}', '_self');">BACK TO IST OPPORTUNITIES</button>
+              <br>
               <button class="links-button" onclick="window.open('/territory/lcbo/${this.params.tm}', '_self');">LCBO</button>
               <br>
               <button class="links-button agency" onclick="window.open('/territory/agency/${this.params.tm}', '_self');">AGENCY</button>

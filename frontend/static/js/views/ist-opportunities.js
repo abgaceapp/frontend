@@ -26,7 +26,7 @@ function getStockoutPredict(db, ref_str, sku, storeID, week, tmName) {
     } else {
       checked_skus_needed -= 1;
 
-      if (sku == "Cottage Springs Mixed 24 Pack") {
+      if (sku == "Cottages Springs Mixed 24 Pack") {
         console.log("TWO FOUR EMPTY");
         console.log(ref_str);
       }
@@ -69,11 +69,14 @@ function getStockoutPredict(db, ref_str, sku, storeID, week, tmName) {
             }
           },
           {
-            name: "Receiving Inventory?",
+            name: "Actions",
             formatter: (_, row) => html(
               `<a
               style="text-decoration: underline; color: #780901; font-weight: bold; cursor: pointer;"
-              href='/inventory/${tmName.replace(/^\w/, (c) => c.toLowerCase()).replaceAll('/', '')}/checkoff/${row.cells[2].data}/${row.cells[0].data.replaceAll(' ', '_')}'>Yes</a>`
+              href='/inventory/${tmName.replace(/^\w/, (c) => c.toLowerCase()).replaceAll('/', '')}/ist/${row.cells[2].data}/${row.cells[0].data.replaceAll(' ', '_')}'>IST</a>
+              <a
+              style="text-decoration: underline; color: gray; font-weight: bold; cursor: pointer; float: right;"
+              href='/inventory/${tmName.replace(/^\w/, (c) => c.toLowerCase()).replaceAll('/', '')}/ist/${row.cells[2].data}/${row.cells[0].data.replaceAll(' ', '_')}'>Ignore</a>`
             )
           }
         ],
@@ -88,11 +91,15 @@ function getStockoutPredict(db, ref_str, sku, storeID, week, tmName) {
         data: tableData,
       }).render(document.getElementById("table-wrap"));
 
-      fadeOutLoader();
-
       const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
       searchbar.placeholder = 'Search by LCBO # or SKU (i.e. Product Name)...';
       searchbar.style.width = '375px';
+
+      // Sort highest -> lowest
+      document.getElementsByClassName('gridjs-th-sort')[1].click();
+      document.getElementsByClassName('gridjs-th-sort')[1].click();
+
+      fadeOutLoader();
     }
   });
 }
@@ -117,11 +124,12 @@ function getStockedout(db, storeID, tmName) {
         // Skip non-stocked out skus
 
         if (key == "Cottage Springs Mixed 24 Pack") {
-          console.log("TWO FOUR");
-        }
+          getStockoutPredict(db, `Predicted_Data/FY${curPeriod[2]}P${curPeriod[0]}W${curPeriod[1]}/${storeID}/${key.replace('Cottage', 'Cottages')}`, key, storeID, `P${curPeriod[0]}W${curPeriod[1]}`, tmName);
 
-        getStockoutPredict(db, `Predicted_Data/FY${curPeriod[2]}P${curPeriod[0]}W${curPeriod[1]}/${storeID}/${key}`, key, storeID, `P${curPeriod[0]}W${curPeriod[1]}`, tmName);
-        checked_skus_needed += 1;
+        } else {
+          getStockoutPredict(db, `Predicted_Data/FY${curPeriod[2]}P${curPeriod[0]}W${curPeriod[1]}/${storeID}/${key.replace('Cottage', 'Cottages')}`, key, storeID, `P${curPeriod[0]}W${curPeriod[1]}`, tmName);
+          checked_skus_needed += 1;
+        }
       }
     }
   });

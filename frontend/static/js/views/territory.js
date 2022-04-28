@@ -21,11 +21,14 @@ function getMetrics(db, name) {
     document.querySelector("#mktshare-wc-tea").innerHTML = `${data["PCT_WC_TEA"]}%`;
     document.querySelector("#mktshare-twisted").innerHTML = `${data["PCT_TWISTED_TEA"]}%`;
 
-    fadeOutLoader();
-
     const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
     searchbar.placeholder = 'Search by LCBO # or SKU (i.e. Product Name)...';
     searchbar.style.width = '375px';
+
+    document.getElementsByClassName('gridjs-th-sort')[1].click();
+    document.getElementsByClassName('gridjs-th-sort')[1].click();
+
+    fadeOutLoader();
   });
 }
 
@@ -294,6 +297,14 @@ export default class extends AbstractView {
             showing_listed = false;
 
             table_grid.updateConfig({data: delistedData}).forceRender();
+
+            // Sort highest -> lowest
+            document.getElementsByClassName('gridjs-th-sort')[1].click();
+            document.getElementsByClassName('gridjs-th-sort')[1].click();
+
+            const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
+            searchbar.placeholder = 'Search by LCBO # or SKU (i.e. Product Name)...';
+            searchbar.style.width = '375px';
           }
         });
 
@@ -305,6 +316,14 @@ export default class extends AbstractView {
             showing_listed = true;
 
             table_grid.updateConfig({data: listedData}).forceRender();
+
+            // Sort highest -> lowest
+            document.getElementsByClassName('gridjs-th-sort')[1].click();
+            document.getElementsByClassName('gridjs-th-sort')[1].click();
+
+            const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
+            searchbar.placeholder = 'Search by LCBO # or SKU (i.e. Product Name)...';
+            searchbar.style.width = '375px';
           }
         });
       }, 1000);

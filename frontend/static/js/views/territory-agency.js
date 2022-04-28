@@ -18,11 +18,15 @@ function getMetrics(db, name) {
     document.querySelector("#mktshare-seltz").innerHTML = `${data["MktShare_Seltz"]}%`;
     document.querySelector("#mktshare-wc").innerHTML = `${data["MktShare_WC"]}%`;
 
-    fadeOutLoader();
+    // Sort highest -> lowest
+    document.getElementsByClassName('gridjs-th-sort')[1].click();
+    document.getElementsByClassName('gridjs-th-sort')[1].click();
 
     const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
     searchbar.placeholder = 'Search by Store # or SKU (i.e. Product Name)...';
     searchbar.style.width = '375px';
+
+    fadeOutLoader();
   });
 }
 

@@ -47,11 +47,14 @@ function getStoreInventory(db, storenum) {
       console.log("No inventory data");
     }
 
-    fadeOutLoader();
-
     const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
     searchbar.placeholder = 'Search by LCBO # or SKU (i.e. Product Name)...';
     searchbar.style.width = '375px';
+
+    document.getElementsByClassName('gridjs-th-sort')[1].click();
+    document.getElementsByClassName('gridjs-th-sort')[1].click();
+
+    fadeOutLoader();
   });
 }
 
@@ -293,7 +296,35 @@ export default class extends AbstractView {
           listbtn.style.opacity = 0.5;
           inventbtn.style.opacity = 0.5;
 
-          table_grid.updateConfig({columns: ['SKU', 'FY Forecast (FY23)'], data: delistedData}).forceRender();
+          table_grid.updateConfig({columns: ['SKU', {
+            name: 'FY Forecast (FY23)',
+            sort: {
+              compare: (a, b) => {
+
+                const floatA = parseFloat(a.replace('$', ''));
+                const floatB = parseFloat(b.replace('$', ''));
+
+                if (floatA > floatB) {
+                  return 1;
+                } else if (floatA < floatB) {
+                  return -1;
+                } else {
+                  return 0;
+                }
+              }
+            },
+            formatter: (cell) => {
+                return numberWithCommas(cell);
+            }
+          }], data: delistedData}).forceRender();
+
+          // Sort highest -> lowest
+          document.getElementsByClassName('gridjs-th-sort')[1].click();
+          document.getElementsByClassName('gridjs-th-sort')[1].click();
+
+          const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
+          searchbar.placeholder = 'Search by LCBO # or SKU (i.e. Product Name)...';
+          searchbar.style.width = '375px';
         });
 
         listbtn.addEventListener('click', () => {
@@ -304,7 +335,35 @@ export default class extends AbstractView {
           delistbtn.style.opacity = 0.5;
           inventbtn.style.opacity = 0.5;
 
-          table_grid.updateConfig({columns: ['SKU', 'FY Forecast (FY23)'], data: listedData}).forceRender();
+          table_grid.updateConfig({columns: ['SKU', {
+            name: 'FY Forecast (FY23)',
+            sort: {
+              compare: (a, b) => {
+
+                const floatA = parseFloat(a.replace('$', ''));
+                const floatB = parseFloat(b.replace('$', ''));
+
+                if (floatA > floatB) {
+                  return 1;
+                } else if (floatA < floatB) {
+                  return -1;
+                } else {
+                  return 0;
+                }
+              }
+            },
+            formatter: (cell) => {
+                return numberWithCommas(cell);
+            }
+          }], data: listedData}).forceRender();
+
+          // Sort highest -> lowest
+          document.getElementsByClassName('gridjs-th-sort')[1].click();
+          document.getElementsByClassName('gridjs-th-sort')[1].click();
+
+          const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
+          searchbar.placeholder = 'Search by LCBO # or SKU (i.e. Product Name)...';
+          searchbar.style.width = '375px';
         });
 
         inventbtn.addEventListener('click', () => {
@@ -316,6 +375,10 @@ export default class extends AbstractView {
           listbtn.style.opacity = 0.5;
 
           table_grid.updateConfig({columns: ['SKU', 'Inventory'], data: inventoryData}).forceRender();
+
+          const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
+          searchbar.placeholder = 'Search by LCBO # or SKU (i.e. Product Name)...';
+          searchbar.style.width = '375px';
         });
       }, 1000);
 
