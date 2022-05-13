@@ -11,7 +11,17 @@ function getMetrics(db, storenum) {
 
   const metricRef = ref(db, `Agency_Store_Metrics/${storenum}`);
 
-  setTimeout(fadeOutLoader(), 750);
+  setTimeout(function() {
+    const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
+    searchbar.placeholder = 'Search by Store # or SKU (i.e. Product Name)...';
+    searchbar.style.width = '375px';
+
+    // Sort highest -> lowest
+    document.getElementsByClassName('gridjs-th-sort')[1].click();
+    document.getElementsByClassName('gridjs-th-sort')[1].click();
+
+    fadeOutLoader();
+  }, 750);
 
   onValue(metricRef, (snapshot) => {
     const data = snapshot.val();
@@ -56,7 +66,7 @@ function waitAllPredictions(db, storeID) {
             }
           }
         ],
-        //search: true,
+        search: true,
         pagination: {
           enabled: true,
           limit: 25
@@ -201,7 +211,7 @@ export default class extends AbstractView {
     }
 
     async getHtml() {
-      document.querySelector("body").style.backgroundImage = "url('../static/img/light_purple_bg.png')";
+      document.querySelector("body").style.backgroundImage = "url('../../static/img/light_purple_bg.png')";
       document.getElementById("aceapp-header").style.visibility = "visible";
 
       const storeID = this.params.id;

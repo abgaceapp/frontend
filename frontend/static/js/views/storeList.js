@@ -40,9 +40,9 @@ function getStoreList(db, tmName) {
             name: "Store ID",
             formatter: (cell) => {
                 if (cell.startsWith("L")) {
-                  return html(`<a href="/store/${cell.slice(5).replace('#', '')}" target="_blank">${cell}</a>`);
+                  return html(`<a href="/store/lcbo/${cell.slice(5).replace('#', '')}" target="_blank">${cell}</a>`);
                 } else {
-                  return html(`<a href="/agency/${cell.slice(7).replace('#', '')}" target="_blank">${cell}</a>`);
+                  return html(`<a href="/store/agency/${cell.slice(7).replace('#', '')}" target="_blank">${cell}</a>`);
                 }
           },
           sort: {
@@ -85,6 +85,10 @@ function getStoreList(db, tmName) {
     }).render(document.getElementById("table-wrapper"));
 
     fadeOutLoader();
+
+    const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
+    searchbar.placeholder = 'Search by LCBO # or Agency #...';
+    searchbar.style.width = '350px';
   });
 }
 
@@ -108,6 +112,16 @@ export default class extends AbstractView {
 
       return `
         <div class="home-row">
+        <div style="display: inline;">
+            <div class="details-widget" style="width: 15vw;">
+              <h1 style="margin-bottom: 30px; color: white;">Quick Links</h1>
+              <button class="links-button" onclick="window.open('/territory/lcbo/${this.params.tm}', '_self');">LCBO</button>
+              <br>
+              <button class="links-button agency" onclick="window.open('/territory/agency/${this.params.tm}', '_self');">AGENCY</button>
+              <br>
+              <button class="links-button inventory" onclick="window.open('/inventory/${this.params.tm}', '_self');">IST OPPORTUNITIES</button>
+            </div>
+          </div>
           <div class="table-widget" style="width: 100%;">
             <h1>${tmName}'s<span class="light-blue">&nbsp;Stores</span></h1>
             <div id="table-wrapper"></div>

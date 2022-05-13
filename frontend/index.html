@@ -19,8 +19,8 @@
     <script src="/static/toastfs/js/toastfs.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
     <!--
+    <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
     <script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
     <script src="https://unpkg.com/gridjs-jquery/dist/gridjs.development.js"></script>
     <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
@@ -39,8 +39,9 @@
       <a onclick="dropdownFunc()" class="right-nav"><img src="/static/img/account-icon.svg" style="height: 30px; margin-top: -10px;"></img></a>
       <div id="accountDropdown" class="dropdown-content">
         <a id="menu-account" href="/account">My Account</a>
-        <a id="menu-territory" href="/territory/">My LCBO</a>
-        <a id="menu-territory-agency" href="/territory-agency/">My Agency</a>
+        <a id="menu-territory" href="/territory/lcbo/">My LCBO</a>
+        <a id="menu-territory-agency" href="/territory/agency/">My Agency</a>
+        <a id="menu-inventory" href="/inventory/">My IST</a>
         <a id="menu-stores" href="/stores/">My Stores</a>
       </div>
     </div>
@@ -52,19 +53,19 @@
     <div id="mySidenav" class="sidenav">
       <a href="/" class="sidenav-logo"></a>
       <a href="/territory/overview" id="main-rep" class="main-rep clickable" data-link><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img><span id="main-rep-name"></span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="main-rep-mini">Territory Overview</span></a>
-      <a href="/territory/andrew" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Andrew</a>
-      <a href="/territory/angie" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Angie</a>
-      <a href="/territory/connor" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Connor</a>
-      <a href="/territory/courtney" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Courtney</a>
-      <a href="/territory/garrett" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Garrett</a>
-      <a href="/territory/isaac" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Isaac</a>
-      <a href="/territory/jacob" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Jacob</a>
-      <a href="/territory/josee" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Josee</a>
-      <a href="/territory/justine" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Justine</a>
-      <a href="/territory/leigh" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Leigh</a>
-      <a href="/territory/mark" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Mark</a>
-      <a href="/territory/nick" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Nick</a>
-      <a href="/territory/taylor" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Taylor</a>
+      <a href="/territory/lcbo/andrew" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Andrew</a>
+      <a href="/territory/lcbo/angie" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Angie</a>
+      <a href="/territory/lcbo/connor" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Connor</a>
+      <a href="/territory/lcbo/courtney" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Courtney</a>
+      <a href="/territory/lcbo/garrett" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Garrett</a>
+      <a href="/territory/lcbo/isaac" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Isaac</a>
+      <a href="/territory/lcbo/jacob" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Jacob</a>
+      <a href="/territory/lcbo/josee" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Josee</a>
+      <a href="/territory/lcbo/justine" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Justine</a>
+      <a href="/territory/lcbo/leigh" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Leigh</a>
+      <a href="/territory/lcbo/mark" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Mark</a>
+      <a href="/territory/lcbo/craig" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Craig</a>
+      <a href="/territory/lcbo/taylor" class="clickable"><img class="nav-icon" src="/static/img/rep-icon.svg" data-link></img>Taylor</a>
     </div>
 
     <div id="app"></div>

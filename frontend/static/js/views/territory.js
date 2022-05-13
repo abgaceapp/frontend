@@ -14,10 +14,19 @@ function getMetrics(db, name) {
 
   onValue(metricRef, (snapshot) => {
     const data = snapshot.val();
-    document.querySelector("#mktshare-rtd").innerHTML = `${data["MktShare_RTD"]}%`;
     document.querySelector("#mktshare-seltz").innerHTML = `${data["MktShare_Seltz"]}%`;
     document.querySelector("#mktshare-tea").innerHTML = `${data["MktShare_Tea"]}%`;
-    document.querySelector("#mktshare-wc").innerHTML = `${data["MktShare_WC"]}%`;
+    document.querySelector("#mktshare-rtd").innerHTML = `${data["MktShare_RTD"]}%`;
+    document.querySelector("#mktshare-wc").innerHTML = `${data["PCT_WC"]}%`;
+    document.querySelector("#mktshare-wc-tea").innerHTML = `${data["PCT_WC_TEA"]}%`;
+    document.querySelector("#mktshare-twisted").innerHTML = `${data["PCT_TWISTED_TEA"]}%`;
+
+    const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
+    searchbar.placeholder = 'Search by LCBO # or SKU (i.e. Product Name)...';
+    searchbar.style.width = '375px';
+
+    document.getElementsByClassName('gridjs-th-sort')[1].click();
+    document.getElementsByClassName('gridjs-th-sort')[1].click();
 
     fadeOutLoader();
   });
@@ -88,7 +97,7 @@ function getListStatus(db, storeID, sku, projected) {
           {
             name: "Store",
             formatter: (cell) => {
-                return html(`<a href="/store/${cell.slice(4)}" target="_blank">${cell}</a>`);
+                return html(`<a href="/store/lcbo/${cell.slice(4)}" target="_blank">${cell}</a>`);
             }
           }
         ],
@@ -235,7 +244,7 @@ export default class extends AbstractView {
 
     async getHtml() {
 
-      document.querySelector("body").style.backgroundImage = "url('../static/img/liteblue_bg.png')";
+      document.querySelector("body").style.backgroundImage = "url('../../static/img/liteblue_bg.png')";
       document.getElementById("aceapp-header").style.visibility = "visible";
 
       const date = new Date();
@@ -288,6 +297,14 @@ export default class extends AbstractView {
             showing_listed = false;
 
             table_grid.updateConfig({data: delistedData}).forceRender();
+
+            // Sort highest -> lowest
+            document.getElementsByClassName('gridjs-th-sort')[1].click();
+            document.getElementsByClassName('gridjs-th-sort')[1].click();
+
+            const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
+            searchbar.placeholder = 'Search by LCBO # or SKU (i.e. Product Name)...';
+            searchbar.style.width = '375px';
           }
         });
 
@@ -299,6 +316,14 @@ export default class extends AbstractView {
             showing_listed = true;
 
             table_grid.updateConfig({data: listedData}).forceRender();
+
+            // Sort highest -> lowest
+            document.getElementsByClassName('gridjs-th-sort')[1].click();
+            document.getElementsByClassName('gridjs-th-sort')[1].click();
+
+            const searchbar = document.getElementsByClassName('gridjs-search-input')[0];
+            searchbar.placeholder = 'Search by LCBO # or SKU (i.e. Product Name)...';
+            searchbar.style.width = '375px';
           }
         });
       }, 1000);
@@ -308,19 +333,30 @@ export default class extends AbstractView {
           ${tmName}'s <span class="light-blue">Territory Overview</span>
         </div>
         <div class="home-row">
-          <div class="details-widget">
-            <h1 style="margin-bottom: 40px; color: white;">Quick Look Metrics</h1>
-            <h1 class="detail-head" style="padding-top: 10px;">RTD<span class="detail-right" id="mktshare-rtd"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-            <h1 class="detail-head">Seltzer<span class="detail-right" id="mktshare-seltz"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-            <h1 class="detail-head">White Claw<span class="detail-right" id="mktshare-wc"></span><br><span style="font-size: 15px;">Market Share</span></h1>
-            <h1 class="detail-head" style="margin-bottom: 10px;">Tea<span class="detail-right" id="mktshare-tea"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+          <div style="display: inline;">
+            <div class="details-widget" style="width: 22vw;">
+              <h1 style="margin-bottom: 30px; color: white;">Quick Links</h1>
+              <button class="links-button agency" onclick="window.open('/territory/agency/${this.params.tm}', '_self');">AGENCY</button>
+              <br>
+              <button class="links-button inventory" onclick="window.open('/inventory/${this.params.tm}', '_self');">IST OPPORTUNITIES</button>
+              <br>
+              <button class="links-button stores" onclick="window.open('/stores/${this.params.tm}', '_self');">ALL STORES</button>
+            </div>
+            <div class="details-widget" style="width: 22vw; margin-top: 20px;">
+              <h1 style="margin-bottom: 40px; color: white;">Quick Look Metrics</h1>
+              <h1 class="detail-head" style="padding-top: 10px;">🟊 White Claw<span class="detail-right priority" id="mktshare-wc"></span><br><span style="font-size: 15px;">% of Sales</span></h1>
+              <h1 class="detail-head">🟊 WC Tea<span class="detail-right priority" id="mktshare-wc-tea"></span><br><span style="font-size: 15px;">% of Sales</span></h1>
+              <h1 class="detail-head">Twisted Tea<span class="detail-right" id="mktshare-twisted"></span><br><span style="font-size: 15px;">% of Sales</span></h1>
+              <h1 class="detail-head">RTD<span class="detail-right" id="mktshare-rtd"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+              <h1 class="detail-head">Seltzer<span class="detail-right" id="mktshare-seltz"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+              <h1 class="detail-head" style="margin-bottom: 5px;">Tea<span class="detail-right" id="mktshare-tea"></span><br><span style="font-size: 15px;">Market Share</span></h1>
+            </div>
           </div>
           <div class="table-widget">
             <div style="display: inline-block;">
               <h1 style="display: inline-block;">Territory Opportunities</h1>
-              <button id="delist-button" class="opportunity-button delisted" style="margin-right: 405px;">DELISTED</button>
-              <button id="list-button" class="opportunity-button listed" style="margin-right: 270px;">LISTED</button>
-              <button class="opportunity-button csv" id="agency-button" style="margin-right: 135px; background-color:#c380ff" onclick="location.href='/territory-agency/${this.params.tm}'">Agency</button>
+              <button id="delist-button" class="opportunity-button delisted" style="margin-right: 270px;">DELISTED</button>
+              <button id="list-button" class="opportunity-button listed" style="margin-right: 135px;">LISTED</button>
               <button class="opportunity-button csv" id="download-csv-button" style="margin-right: 0px;">Export CSV</button>
             </div>
             <div id="table-wrap"></div>
