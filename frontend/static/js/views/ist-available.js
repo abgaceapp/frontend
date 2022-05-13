@@ -12,7 +12,7 @@ var table_grid = new Grid();
 var invent_checked = 0;
 var invent_checked_needed = 0;
 
-function getInStock(db, store, sku, tm) {
+function getInStock(db, store, sku, tm, senderStore) {
   const inventory_ref = ref(db, `Store_Inventory/${store}/${sku}`);
 
   onValue(inventory_ref, (snapshot) => {
@@ -41,7 +41,7 @@ function getInStock(db, store, sku, tm) {
             formatter: (_, row) => html(
               `<a
               style="text-decoration: underline; color: #780901; font-weight: bold; cursor: pointer;"
-              href='/inventory/${tm.replace(/^\w/, (c) => c.toLowerCase()).replaceAll('/', '')}/checkoff/${row.cells[0].data}/${sku.replaceAll(' ', '_')}'>Confirm IST</a>`
+              href='/inventory/${tm.replace(/^\w/, (c) => c.toLowerCase()).replaceAll('/', '')}/checkoff/${senderStore}/${sku.replaceAll(' ', '_')}'>Confirm IST</a>`
             )
           }
         ],
@@ -76,7 +76,7 @@ function getISTOptions(db, tm, sku, store) {
 
     for (var storeKey in storelistSnap) {
       if (storeKey.substring(0, 4) == "LCBO") {
-        getInStock(db, storeKey, sku, tm);
+        getInStock(db, storeKey, sku, tm, store);
 
         invent_checked_needed += 1;
       }

@@ -2,8 +2,9 @@ import Landing from "./views/home.js";
 import Territory from "./views/territory.js";
 import AgencyTerritory from "./views/territory-agency.js";
 import InventoryOverview from "./views/ist-opportunities.js";
-import InventoryCheckoff from "./views/ist-override.js";
 import InventoryAvailable from "./views/ist-available.js";
+import InventoryCheckoff from "./views/ist-override.js";
+import InventoryIgnore from "./views/ist-ignore.js";
 import Store from "./views/store.js";
 import Agency from "./views/agency.js";
 import Login from "./views/login.js";
@@ -31,6 +32,7 @@ const router = async () => {
         { path: "/", view: Landing },
         //{ path: "/inventory/store/:id", view: Store },
         { path: "/inventory/:tm/checkoff/:store/:sku", view: InventoryCheckoff },
+        { path: "/inventory/:tm/ignore/:store/:sku", view: InventoryIgnore },
         { path: "/inventory/:tm/ist/:store/:sku", view: InventoryAvailable },
         { path: "/inventory/:tm", view: InventoryOverview },
         { path: "/territory/lcbo/:tm", view: Territory },

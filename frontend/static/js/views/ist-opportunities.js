@@ -76,7 +76,7 @@ function getStockoutPredict(db, ref_str, sku, storeID, week, tmName) {
               href='/inventory/${tmName.replace(/^\w/, (c) => c.toLowerCase()).replaceAll('/', '')}/ist/${row.cells[2].data}/${row.cells[0].data.replaceAll(' ', '_')}'>IST</a>
               <a
               style="text-decoration: underline; color: gray; font-weight: bold; cursor: pointer; float: right;"
-              href='/inventory/${tmName.replace(/^\w/, (c) => c.toLowerCase()).replaceAll('/', '')}/ist/${row.cells[2].data}/${row.cells[0].data.replaceAll(' ', '_')}'>Ignore</a>`
+              href='/inventory/${tmName.replace(/^\w/, (c) => c.toLowerCase()).replaceAll('/', '')}/ignore/${row.cells[2].data}/${row.cells[0].data.replaceAll(' ', '_')}'>Ignore</a>`
             )
           }
         ],
@@ -127,7 +127,7 @@ function getStockedout(db, storeID, tmName) {
           getStockoutPredict(db, `Predicted_Data/FY${curPeriod[2]}P${curPeriod[0]}W${curPeriod[1]}/${storeID}/${key.replace('Cottage', 'Cottages')}`, key, storeID, `P${curPeriod[0]}W${curPeriod[1]}`, tmName);
 
         } else {
-          getStockoutPredict(db, `Predicted_Data/FY${curPeriod[2]}P${curPeriod[0]}W${curPeriod[1]}/${storeID}/${key.replace('Cottage', 'Cottages')}`, key, storeID, `P${curPeriod[0]}W${curPeriod[1]}`, tmName);
+          getStockoutPredict(db, `Predicted_Data/FY${curPeriod[2]}P${curPeriod[0]}W${curPeriod[1]}/${storeID}/${key.replace('Cottages', 'Cottage')}`, key, storeID, `P${curPeriod[0]}W${curPeriod[1]}`, tmName);
           checked_skus_needed += 1;
         }
       }
